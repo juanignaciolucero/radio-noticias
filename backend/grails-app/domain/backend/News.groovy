@@ -14,5 +14,6 @@ class News {
         featured nulleable:false
         enable nulleable:false
         category nulleble:false
+        user nulleable:false
     }
 }
