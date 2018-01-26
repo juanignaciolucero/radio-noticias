@@ -1,6 +1,6 @@
 package backend
 
-class Usuario {
+class User {
     String firstName
     String lastName
     String user
