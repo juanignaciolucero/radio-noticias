@@ -6,6 +6,7 @@ class News {
     Boolean featured
     Boolean enable
     Category category
+    User user
     static hasMany = [radios : Radio]
     static constraints = {
         title nulleable:false,blank:false
