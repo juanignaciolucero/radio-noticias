@@ -1,15 +1,19 @@
 package backend
 
-class Noticia {
+class News {
     String title
     String news
-    Boolean destacada
+    Boolean featured
     Boolean enable
-    static belongsTo = [radios : Radio]
+    Category category
+    User user
+    static hasMany = [radios : Radio]
     static constraints = {
         title nulleable:false,blank:false
         news nulleable:false,blank:false
-        destacada nulleable:false
+        featured nulleable:false
         enable nulleable:false
+        category nulleble:false
+        user nulleable:false
     }
 }
