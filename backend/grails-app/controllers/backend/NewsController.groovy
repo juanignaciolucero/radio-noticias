@@ -1,6 +1,4 @@
 package backend
-import grails.rest.*
-import grails.converters.*
 import news.IndexCommand
 import news.SaveCommand
 
