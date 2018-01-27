@@ -5,19 +5,22 @@ import grails.converters.*
 
 class NewsController {
 	static responseFormats = ['json', 'xml']
-	def newsService
+    NewsService newsService
+    SsasasfService ssasasfService
 
     def index() {
 
     }
 
-    def save(SaveCommand command) {
-        Noticia news = newsService.save(command)
+    def show() {}
 
+    def save(SaveCommand command) {
+        News news = newsService.save(command)
+        respond(news)
 
     }
 
-    def edit() {}
+    def update() {}
 
     def delete() {}
 }

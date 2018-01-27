@@ -1,0 +1,21 @@
+import backend.News
+
+model {
+    News news
+}
+def userParse = [
+        id: news.user.id
+]
+def categoryParse = [
+        id: news.newsCategory.id
+]
+
+json {
+    radios news.radios.collect{it.id}
+    title news.title
+    news news.news
+    featured news.featured
+    enable news.enable
+    category categoryParse
+    user userParse
+}

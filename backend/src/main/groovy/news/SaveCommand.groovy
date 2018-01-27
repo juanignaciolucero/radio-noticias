@@ -1,21 +1,27 @@
 package news
 
+import backend.NewsCategory
 import backend.Radio
+import backend.User
 
 class SaveCommand implements grails.validation.Validateable  {
     String title
     String news
-    Boolean destacada
+    Boolean featured
     Boolean enable
-    Radio radio
+    List<Radio> radios
+    NewsCategory newsCategory
+    User user
 
     Map params() {
         return [
                 title: title,
                 news: news,
-                destacada: destacada,
+                featured: featured,
                 enable: enable,
-                radio: radio
+                newsCategory:newsCategory,
+                radios: radios,
+                user:user
         ]
     }
 }

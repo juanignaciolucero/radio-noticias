@@ -5,7 +5,7 @@ class News {
     String news
     Boolean featured
     Boolean enable
-    Category category
+    NewsCategory newsCategory
     User user
     static hasMany = [radios : Radio]
     static constraints = {
@@ -13,7 +13,7 @@ class News {
         news nulleable:false,blank:false
         featured nulleable:false
         enable nulleable:false
-        category nulleble:false
+        newsCategory nulleble:false
         user nulleable:false
     }
 }
