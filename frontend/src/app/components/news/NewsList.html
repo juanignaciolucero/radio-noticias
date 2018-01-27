@@ -1,4 +1,108 @@
 <div class="component">
-  <button type="button" class="btn btn-primary">Default</button>
-  <h2 class="text-info">{{$ctrl.text}}</h2>
+
+  <div class="col-sm-4">
+    <div class="form-group">
+      <input type="text" value="" placeholder="Regular" class="form-control" />
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group label-floating">
+      <label class="control-label">With Floating Label</label>
+      <input type="email" class="form-control">
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group label-floating has-success">
+      <label class="control-label">Success input</label>
+      <input type="text" value="Success" class="form-control" />
+      <span class="form-control-feedback">
+			<i class="material-icons">done</i>
+		</span>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group label-floating has-error">
+      <label class="control-label">Error input</label>
+      <input type="email" value="Error Input" class="form-control" />
+      <span class="material-icons form-control-feedback">clear</span>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="input-group">
+		<span class="input-group-addon">
+			<i class="material-icons">group</i>
+		</span>
+      <input type="text" class="form-control" placeholder="With Material Icons">
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="input-group">
+		<span class="input-group-addon">
+			<i class="fa fa-group"></i>
+		</span>
+      <input type="text" class="form-control" placeholder="With Font Awesome Icons">
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-header" data-background-color="blue">
+      <h4 class="title">Simple Table</h4>
+      <p class="category">Here is a subtitle for this table</p>
+    </div>
+    <div class="card-content table-responsive">
+      <table class="table">
+        <thead class="text-primary">
+        <th>Name</th>
+        <th>Country</th>
+        <th>City</th>
+        <th>Salary</th>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Dakota Rice</td>
+          <td>Niger</td>
+          <td>Oud-Turnhout</td>
+          <td class="text-primary">$36,738</td>
+        </tr>
+        <tr>
+          <td>Minerva Hooper</td>
+          <td>Curaçao</td>
+          <td>Sinaai-Waas</td>
+          <td class="text-primary">$23,789</td>
+        </tr>
+        <tr>
+          <td>Sage Rodriguez</td>
+          <td>Netherlands</td>
+          <td>Baileux</td>
+          <td class="text-primary">$56,142</td>
+        </tr>
+        <tr>
+          <td>Philip Chaney</td>
+          <td>Korea, South</td>
+          <td>Overland Park</td>
+          <td class="text-primary">$38,735</td>
+        </tr>
+        <tr>
+          <td>Doris Greene</td>
+          <td>Malawi</td>
+          <td>Feldkirchen in Kärnten</td>
+          <td class="text-primary">$63,542</td>
+        </tr>
+        <tr>
+          <td>Mason Porter</td>
+          <td>Chile</td>
+          <td>Gloucester</td>
+          <td class="text-primary">$78,615</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>

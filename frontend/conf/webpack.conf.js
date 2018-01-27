@@ -17,7 +17,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|(src\/assets\/libs)/,
         loader: 'eslint-loader',
         enforce: 'pre'
       },
@@ -32,7 +32,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|(src\/assets\/libs)/,
         loaders: [
           'ng-annotate-loader',
           'babel-loader'
@@ -43,6 +43,10 @@ module.exports = {
         loaders: [
           'html-loader'
         ]
+      },
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
       }
     ]
   },
