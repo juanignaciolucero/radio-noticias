@@ -1,22 +1,27 @@
 package backend
-import news.*
 import grails.rest.*
 import grails.converters.*
+import news.IndexCommand
+import news.SaveCommand
 
 class NewsController {
 	static responseFormats = ['json', 'xml']
     NewsService newsService
     SsasasfService ssasasfService
 
-    def index() {
-
+    def index(IndexCommand command) {
+        if(command.hasErrors()){
+            response(command)
+        }else{
+            response(command.index())
+        }
     }
+
 
     def show() {}
 
     def save(SaveCommand command) {
-        News news = newsService.save(command)
-        respond(news)
+        respond(newsService.save(command))
 
     }
 
