@@ -13,5 +13,9 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     .state('app.newsList', {
       url: 'news',
       component: 'newsList'
+    })
+    .state('app.newsCreate', {
+      url: 'news/create',
+      component: 'newsCreate'
     });
 }

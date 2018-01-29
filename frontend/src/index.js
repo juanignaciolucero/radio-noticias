@@ -14,6 +14,8 @@ import {TodoTextInput} from './app/components/TodoTextInput';
 import {TodoItem} from './app/components/TodoItem';
 import {Footer} from './app/components/Footer';
 import {NewsList} from './app/components/news/NewsList';
+import {NewsCreate} from './app/components/news/NewsCreate';
+
 import 'angular-ui-router';
 
 import routesConfig from './routes';
@@ -30,4 +32,5 @@ angular
   .component('mainSection', MainSection)
   .component('todoTextInput', TodoTextInput)
   .component('todoItem', TodoItem)
-  .component('newsList', NewsList);
+  .component('newsList', NewsList)
+  .component('newsCreate', NewsCreate);
