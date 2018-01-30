@@ -8,7 +8,6 @@ class ApplicationController implements PluginManagerAware {
 
     GrailsApplication grailsApplication
     GrailsPluginManager pluginManager
-    AsdService asdService
 
     def index() {
         [grailsApplication: grailsApplication, pluginManager: pluginManager]

@@ -2,18 +2,19 @@ package radios.backend
 
 class News {
     String title
-    String news
+    String description
     Boolean featured
-    Boolean enable
+    Boolean enable = true
     NewsCategory newsCategory
     User user
-    static hasMany = [radios : Radio]
+    static hasMany = [radios: Radio]
     static constraints = {
-        title nulleable:false,blank:false
-        news nulleable:false,blank:false
-        featured nulleable:false
-        enable nulleable:false
-        newsCategory nulleble:false
-        user nulleable:false
+        title nullable: false, blank: false
+        description nullable: false, blank: false
+        featured nullable: false
+        enable nullable: false
+        newsCategory nullable: false
+        user nullable: false
+        radios minSize: 1, nullable: false
     }
 }

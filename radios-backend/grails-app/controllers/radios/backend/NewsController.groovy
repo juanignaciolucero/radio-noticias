@@ -1,27 +1,43 @@
 package radios.backend
+
 import news.IndexCommand
 import news.SaveCommand
 
+import news.UpdateCommand
+import org.springframework.http.HttpStatus
+
 class NewsController {
-	static responseFormats = ['json']
+    static responseFormats = ['json']
     NewsService newsService
 
     def index(IndexCommand command) {
-        if(command.hasErrors()){
-            response(command)
-        }else{
-            response(newsService.index())
+        respond([news: newsService.index(command)])
+    }
+
+    def show(News news) {
+        if (news) {
+            respond(news)
+        } else {
+            response.setStatus(HttpStatus.NOT_FOUND.value())
+            respond([:])
         }
     }
 
-    def show() {}
-
     def save(SaveCommand command) {
         respond(newsService.save(command))
-
     }
 
-    def update() {}
+    def update(UpdateCommand command) {
+        respond(newsService.update(command))
+    }
 
-    def delete() {}
+    def delete(News news) {
+        if (news && news.enable) {
+            newsService.delete(news)
+            respond([:])
+        } else {
+            response.setStatus(HttpStatus.NOT_FOUND.value())
+            respond([:])
+        }
+    }
 }

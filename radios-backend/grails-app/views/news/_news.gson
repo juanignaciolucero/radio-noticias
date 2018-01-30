@@ -11,11 +11,12 @@ def categoryParse = [
 ]
 
 json {
+    id news.id
     radios news.radios.collect{it.id}
     title news.title
-    news news.news
+    news news.description
     featured news.featured
     enable news.enable
-    category categoryParse
+    newsCategory categoryParse
     user userParse
 }

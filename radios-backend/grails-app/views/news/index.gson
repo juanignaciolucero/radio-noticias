@@ -3,4 +3,4 @@ import radios.backend.News
 model {
 	List<News> news
 }
-json g.render(template: "news", model:[news: news])
+json tmpl.news(news)
