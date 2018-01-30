@@ -12,7 +12,7 @@ class UrlMappings {
 
         "/"(controller: 'application', action:'index')*/
 
-        group("/api"){
+        group("/api") {
             "/news"(resources:"news")
         }
 

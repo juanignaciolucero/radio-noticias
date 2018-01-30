@@ -8,7 +8,7 @@ class NewsHolder implements grails.validation.Validateable {
     String title
     String description
     Boolean featured
-    Boolean enable
+    Boolean enabled
     List<Radio> radios
     NewsCategory newsCategory
     User user
@@ -18,7 +18,7 @@ class NewsHolder implements grails.validation.Validateable {
             title       : title,
             description : description,
             featured    : featured,
-            enable      : enable,
+            enabled      : enabled,
             newsCategory: newsCategory,
             radios      : radios,
             user        : user

@@ -1,5 +1,6 @@
 package radios.backend
 
+import commons.PaginateCommand
 import news.IndexCommand
 import news.SaveCommand
 
@@ -10,8 +11,8 @@ class NewsController {
     static responseFormats = ['json']
     NewsService newsService
 
-    def index(IndexCommand command) {
-        respond([news: newsService.index(command)])
+    def index(IndexCommand command, PaginateCommand paginate) {
+        respond([news: newsService.index(command,paginate)])
     }
 
     def show(News news) {
@@ -32,7 +33,7 @@ class NewsController {
     }
 
     def delete(News news) {
-        if (news && news.enable) {
+        if (news && news.enabled) {
             newsService.delete(news)
             respond([:])
         } else {

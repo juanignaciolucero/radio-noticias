@@ -4,19 +4,19 @@ model {
     News news
 }
 def userParse = [
-        id: news.user.id
+    id: news.user.id
 ]
 def categoryParse = [
-        id: news.newsCategory.id
+    id: news.newsCategory.id
 ]
 
 json {
     id news.id
-    radios news.radios.collect{it.id}
+    radios news.radios.collect { [id: it.id, name: it.name] }
     title news.title
     news news.description
     featured news.featured
-    enable news.enable
+    enabled news.enabled
     newsCategory categoryParse
     user userParse
 }

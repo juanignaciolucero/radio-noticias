@@ -1,10 +1,12 @@
 package radios.backend
 
+import enums.MultimediaType
+
 class Multimedia {
-    String imageID
-    String audioID
+    String mediaId
+    MultimediaType type
     static constraints = {
-        imageID nullable:true
-        audioID nullable:true
+        mediaId nullable: false
+        type nullable: false
     }
 }

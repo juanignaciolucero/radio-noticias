@@ -1,0 +1,7 @@
+import radios.backend.Ad
+
+model {
+	Ad ad
+}
+
+json g.render(ad, [resolveTemplate: false])

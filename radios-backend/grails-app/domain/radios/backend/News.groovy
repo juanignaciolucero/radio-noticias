@@ -4,7 +4,7 @@ class News {
     String title
     String description
     Boolean featured
-    Boolean enable = true
+    Boolean enabled = true
     NewsCategory newsCategory
     User user
     static hasMany = [radios: Radio]
@@ -12,7 +12,7 @@ class News {
         title nullable: false, blank: false
         description nullable: false, blank: false
         featured nullable: false
-        enable nullable: false
+        enabled nullable: false
         newsCategory nullable: false
         user nullable: false
         radios minSize: 1, nullable: false

@@ -1,5 +1,6 @@
 package radios.backend
 
+import commons.PaginateCommand
 import grails.gorm.transactions.Transactional
 
 import news.IndexCommand
@@ -19,10 +20,10 @@ class NewsService {
         return news
     }
 
-    List<News> index(IndexCommand command) {
-        return News.createCriteria().list() {
+    List<News> index(IndexCommand command, PaginateCommand paginate) {
+        return News.createCriteria().list(paginate.params()) {
             if (!command.showDisabled) {
-                eq("enable", true)
+                eq("enabled", true)
             }
             if (command.radio) {
                 radios {
@@ -33,7 +34,7 @@ class NewsService {
     }
 
     def delete(News news) {
-        news.enable = false
+        news.enabled = false
         news.save(failOnError: true)
     }
 

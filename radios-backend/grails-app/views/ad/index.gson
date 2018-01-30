@@ -1,0 +1,8 @@
+import radios.backend.Ad
+
+model {
+	Iterable<Ad> adList
+}
+
+json tmpl.ad(adList ?: [])
+
