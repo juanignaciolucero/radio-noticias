@@ -1,0 +1,6 @@
+import radios.backend.News
+
+model {
+	List<News> news
+}
+json tmpl.news(news)
