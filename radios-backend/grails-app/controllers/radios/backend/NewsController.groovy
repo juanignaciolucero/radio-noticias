@@ -1,12 +1,14 @@
 package radios.backend
 
 import commons.PaginateCommand
+import grails.plugin.springsecurity.annotation.Secured
 import news.IndexCommand
 import news.SaveCommand
 
 import news.UpdateCommand
 import org.springframework.http.HttpStatus
 
+@Secured('ROLE_ADMIN')
 class NewsController {
     static responseFormats = ['json']
     NewsService newsService
