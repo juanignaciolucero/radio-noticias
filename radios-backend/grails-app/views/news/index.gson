@@ -1,6 +1,9 @@
-import radios.backend.News
+import grails.gorm.PagedResultList
 
 model {
-	List<News> news
+	PagedResultList news
 }
-json tmpl.news(news)
+json {
+	news tmpl.news(news)
+	totalCount news.totalCount
+}

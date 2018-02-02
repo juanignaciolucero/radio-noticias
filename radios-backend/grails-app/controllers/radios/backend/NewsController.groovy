@@ -1,6 +1,7 @@
 package radios.backend
 
 import commons.PaginateCommand
+import grails.gorm.PagedResultList
 import grails.plugin.springsecurity.annotation.Secured
 import news.IndexCommand
 import news.SaveCommand
@@ -13,8 +14,10 @@ class NewsController {
     static responseFormats = ['json']
     NewsService newsService
 
+    @Secured('permitAll')
     def index(IndexCommand command, PaginateCommand paginate) {
-        respond([news: newsService.index(command,paginate)])
+        PagedResultList list = newsService.index(command,paginate)
+        respond([news: list])
     }
 
     def show(News news) {
