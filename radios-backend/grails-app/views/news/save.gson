@@ -1,0 +1,6 @@
+import radios.backend.News
+
+model {
+	News news
+}
+json g.render(template: "news", model:[news: news])

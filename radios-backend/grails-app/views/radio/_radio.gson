@@ -1,0 +1,7 @@
+import radios.backend.Radio
+
+model {
+	Radio radio
+}
+
+json g.render(radio, [resolveTemplate: false])

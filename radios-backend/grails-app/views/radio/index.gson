@@ -1,0 +1,8 @@
+import radios.backend.Radio
+
+model {
+	Iterable<Radio> radioList
+}
+
+json tmpl.radio(radioList ?: [])
+
