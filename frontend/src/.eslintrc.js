@@ -3,7 +3,7 @@ module.exports = {
     'angular'
   ],
   rules: {
-    'angular/no-service-method': 0
-  },
-  exclude: [/material/],
+    'angular/no-service-method': 0,
+    "no-console": 1
+  }
 }

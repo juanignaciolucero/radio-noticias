@@ -47,9 +47,9 @@ var seq2 = 0,
     durations2 = 500;
 
 
+var $sidebar = $('.sidebar');
 $(document).ready(function() {
 
-    var $sidebar = $('.sidebar');
 
     $.material.init();
 

@@ -7,6 +7,8 @@ import './assets/libs/material-dashboard-v1.2.0/assets/js/material.min';
 import './assets/libs/material-dashboard-v1.2.0/assets/js/material-dashboard';
 
 import {TodoService} from './app/todos/todos';
+import {NewsService} from './app/services/NewsService';
+
 import {App} from './app/containers/App';
 import {Header} from './app/components/Header';
 import {MainSection} from './app/components/MainSection';
@@ -17,15 +19,20 @@ import {NewsList} from './app/components/news/NewsList';
 import {NewsCreate} from './app/components/news/NewsCreate';
 
 import 'angular-ui-router';
+import 'restangular';
+import 'angular-ui-bootstrap';
 
 import routesConfig from './routes';
+import restangularConfig from './restangular';
 
 import './index.scss';
 
 angular
-  .module('app', ['ui.router'])
+  .module('app', ['ui.router', 'restangular', 'ui.bootstrap'])
   .config(routesConfig)
+  .run(restangularConfig)
   .service('todoService', TodoService)
+  .service('newsService', NewsService)
   .component('app', App)
   .component('headerComponent', Header)
   .component('footerComponent', Footer)

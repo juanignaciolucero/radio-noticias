@@ -2,15 +2,17 @@ grails.plugin.springsecurity.filterChain.chainMap = [
     //Stateless chain
     [
         pattern: '/api/**',
-        filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'
+        filters: 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'
     ],
-
     //Traditional chain
     [
         pattern: '/**',
         filters: 'JOINED_FILTERS,-restTokenValidationFilter,-restExceptionTranslationFilter'
     ]
 ]
+
+
+grails.plugin.springsecurity.rest.token.validation.enableAnonymousAccess = true
 grails.plugin.springsecurity.rest.token.validation.useBearerToken = false
 grails.plugin.springsecurity.rest.token.validation.headerName = 'X-Auth-Token'
 
