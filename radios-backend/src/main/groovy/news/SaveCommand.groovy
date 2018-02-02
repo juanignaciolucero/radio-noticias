@@ -1,5 +1,5 @@
 package news
 
-class SaveCommand extends NewsHolder{
+class SaveCommand extends NewsHolder {
 
 }
