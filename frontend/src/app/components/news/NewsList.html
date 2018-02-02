@@ -6,23 +6,31 @@
 
     <div class="card-content table-responsive">
       <table class="table">
-        <thead class="text-primary">
+        <thead>
         <th>Titulo</th>
-        <th>Destacada</th>
         <th>Radios</th>
+        <th>Destacada</th>
         <th>Activa</th>
         <th>Acciones</th>
         <tr ng-repeat="news in $ctrl.news">
           <td>
             <a href="#">{{news.title}}</a></td>
-          <td>{{(news.featured)? 'Si' : 'No'}}</td>
           <td>
             <span style="margin: 1px;" ng-repeat="radio in news.radios" class="label label-primary">
               {{radio.name}}
             </span>
           </td>
+          <td>{{(news.featured)? 'Si' : 'No'}}</td>
           <td>{{(news.enabled)? 'Si' : 'No'}}</td>
-          <td></td>
+          <td>
+            <a ui-sref="app.newsEdit({ id: {{news.id}} })"
+               class="btn btn-default btn-xs btn-round">
+              <i class="material-icons">mode_edit</i>
+            </a>
+            <button ng-click="$ctrl.deleteNews(news.id)" class="btn btn-danger btn-xs btn-round">
+              <i class="material-icons">delete</i>
+            </button>
+          </td>
         </tr>
         </tbody>
       </table>
