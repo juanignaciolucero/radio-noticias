@@ -1,63 +1,60 @@
 <div class="component">
-  <div class="col-sm-8">
-    <div class="form-group">
-      <input type="text" value="" placeholder="Regular" class="form-control" />
-    </div>
-    <div class="form-group">
-      <input type="text" value="" placeholder="Regular" class="form-control" />
-    </div>
-  </div>
-  <div class="col-sm-4">
+  <form>
+    <div class="row">
+      <div class="col-sm-4 col-sm-offset-2">
+        <div class="form-group label-floating">
+          <label class="control-label">Titulo</label>
+          <input ng-model="$ctrl.news.title" type="text" class="form-control">
+        </div>
+        <div class="form-group label-floating">
+          <label class="control-label">Descricion</label>
+          <textarea ng-model="$ctrl.news.description" class="form-control"></textarea>
+        </div>
+        <div class="form-group label-floating">
+          <label class="control-label">Radios</label>
+          <select class="form-control" multiple name="radios" ng-model="$ctrl.news.radios" multiple>
+            <option ng-repeat="radio in $ctrl.radios" ng-value="radios.id">{{radio.name}}</option>
+          </select>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="$ctrl.news.featured" name="featured">
+            Destacada
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="$ctrl.news.enabled" name="enabled">
+            Activa
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+          <div class="fileinput-new thumbnail">
+            <img src="http://demos.creative-tim.com/material-dashboard-pro/assets/img/image_placeholder.jpg" alt="...">
+          </div>
+          <!--<span class="btn btn-primary btn-file">
+              <span class="fileinput-new">Select image</span>
+          </span>-->
+        </div>
 
-  </div>
-
-
-  <div class="col-sm-4">
-    <div class="form-group">
-      <input type="text" value="" placeholder="Regular" class="form-control" />
+        <label class="control-label">Audio</label>
+        <input ng-model="$ctrl.news.title" type="file">
+      </div>
     </div>
-  </div>
-
-  <div class="col-sm-4">
-    <div class="form-group label-floating">
-      <label class="control-label">With Floating Label</label>
-      <input type="email" class="form-control">
+    <hr>
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <div class="text-right">
+          <button type="button" class="btn btn-danger bottom-right">
+            Cancelar
+          </button>
+          <button type="submit"class="btn btn-primary bottom-right">
+           Guardar
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="col-sm-4">
-    <div class="form-group label-floating has-success">
-      <label class="control-label">Success input</label>
-      <input type="text" value="Success" class="form-control" />
-      <span class="form-control-feedback">
-			<i class="material-icons">done</i>
-		</span>
-    </div>
-  </div>
-
-  <div class="col-sm-4">
-    <div class="form-group label-floating has-error">
-      <label class="control-label">Error input</label>
-      <input type="email" value="Error Input" class="form-control" />
-      <span class="material-icons form-control-feedback">clear</span>
-    </div>
-  </div>
-
-  <div class="col-sm-4">
-    <div class="input-group">
-		<span class="input-group-addon">
-			<i class="material-icons">group</i>
-		</span>
-      <input type="text" class="form-control" placeholder="With Material Icons">
-    </div>
-  </div>
-
-  <div class="col-sm-4">
-    <div class="input-group">
-		<span class="input-group-addon">
-			<i class="fa fa-group"></i>
-		</span>
-      <input type="text" class="form-control" placeholder="With Font Awesome Icons">
-    </div>
-  </div>
+  </form>
 </div>

@@ -1,6 +1,22 @@
 class NewsCreateController {
   constructor() {
-    this.text = 'My brand new component!';
+    this.news = {
+      enabled: true
+    };
+    this.radios = [
+      {
+        id: 1,
+        name: 'Radio 1'
+      },
+      {
+        id: 2,
+        name: 'Radio 2'
+      },
+      {
+        id: 3,
+        name: 'Radio 3'
+      }
+    ];
   }
 }
 

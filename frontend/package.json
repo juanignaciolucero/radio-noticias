@@ -6,6 +6,7 @@
     "file-loader": "^1.1.6",
     "generator-fountain-angular1": "^1.0.0",
     "jquery": "^3.3.1",
+    "restangular": "^1.6.1",
     "todomvc-app-css": "^2.0.6",
     "url-loader": "^0.6.2"
   },

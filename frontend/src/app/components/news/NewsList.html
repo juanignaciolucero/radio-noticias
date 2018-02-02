@@ -3,6 +3,7 @@
     <div class="card-header" data-background-color="blue">
       <h4 class="title">Listado de noticias</h4>
     </div>
+
     <div class="card-content table-responsive">
       <table class="table">
         <thead class="text-primary">
@@ -10,46 +11,25 @@
         <th>Destacada</th>
         <th>Radios</th>
         <th>Activa</th>
-        </thead>
-        <tbody>
-        <tr>
-          <td>Dakota Rice</td>
-          <td>Niger</td>
-          <td>Oud-Turnhout</td>
-          <td class="text-primary">$36,738</td>
-        </tr>
-        <tr>
-          <td>Minerva Hooper</td>
-          <td>Curaçao</td>
-          <td>Sinaai-Waas</td>
-          <td class="text-primary">$23,789</td>
-        </tr>
-        <tr>
-          <td>Sage Rodriguez</td>
-          <td>Netherlands</td>
-          <td>Baileux</td>
-          <td class="text-primary">$56,142</td>
-        </tr>
-        <tr>
-          <td>Philip Chaney</td>
-          <td>Korea, South</td>
-          <td>Overland Park</td>
-          <td class="text-primary">$38,735</td>
-        </tr>
-        <tr>
-          <td>Doris Greene</td>
-          <td>Malawi</td>
-          <td>Feldkirchen in Kärnten</td>
-          <td class="text-primary">$63,542</td>
-        </tr>
-        <tr>
-          <td>Mason Porter</td>
-          <td>Chile</td>
-          <td>Gloucester</td>
-          <td class="text-primary">$78,615</td>
+        <th>Acciones</th>
+        <tr ng-repeat="news in $ctrl.news">
+          <td>
+            <a href="#">{{news.title}}</a></td>
+          <td>{{(news.featured)? 'Si' : 'No'}}</td>
+          <td>
+            <span style="margin: 1px;" ng-repeat="radio in news.radios" class="label label-primary">
+              {{radio.name}}
+            </span>
+          </td>
+          <td>{{(news.enabled)? 'Si' : 'No'}}</td>
+          <td></td>
         </tr>
         </tbody>
       </table>
+      <div class="text-center">
+        <ul uib-pagination total-items="$ctrl.totalCount" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"></ul>
+      </div>
+
     </div>
   </div>
 
