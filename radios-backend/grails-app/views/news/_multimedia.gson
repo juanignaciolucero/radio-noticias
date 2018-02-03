@@ -1,0 +1,8 @@
+model {
+	Multimedia multimedia
+}
+
+json {
+	mediaId multimedia.mediaId
+
+}

@@ -1,16 +1,18 @@
 package radios.backend
 
+import Command.news.AddMultimediaCommand
 import commons.PaginateCommand
+import enums.MultimediaType
 import grails.gorm.transactions.Transactional
 
-import news.IndexCommand
-import news.SaveCommand
+import Command.news.IndexCommand
+import Command.news.SaveCommand
 
-import news.UpdateCommand
+import Command.news.UpdateCommand
 
 @Transactional
 class NewsService {
-
+    CloudService cloudService
     News save(SaveCommand command) {
         News news = new News(command.params())
         news.validate()
@@ -46,6 +48,19 @@ class NewsService {
             news.save()
         }
         return news
+    }
+
+    def addMultimedia(AddMultimediaCommand command) {
+        News news = command.news
+        Multimedia multimedia = new Multimedia(type: command.type)
+        if (multimedia == MultimediaType.AUDIO){
+            news.audio = multimedia
+        }else {
+            news.image = multimedia
+        }
+        cloudService.upload(command.file,multimedia)
+        news.save()
+        return multimedia
     }
 
 }
