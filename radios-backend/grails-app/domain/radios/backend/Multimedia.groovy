@@ -3,7 +3,7 @@ package radios.backend
 import enums.MultimediaType
 
 class Multimedia {
-    String mediaId
+    String mediaId = UUID.randomUUID().toString()
     MultimediaType type
     static constraints = {
         mediaId nullable: false

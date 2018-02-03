@@ -1,4 +1,4 @@
-package news
+package Command.news
 
 import grails.validation.Validateable
 import radios.backend.Radio

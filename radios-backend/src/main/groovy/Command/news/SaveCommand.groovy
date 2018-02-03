@@ -1,4 +1,4 @@
-package news
+package Command.news
 
 class SaveCommand extends NewsHolder {
 
