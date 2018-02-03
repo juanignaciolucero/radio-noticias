@@ -9,12 +9,12 @@ import news.SaveCommand
 import news.UpdateCommand
 import org.springframework.http.HttpStatus
 
-@Secured('ROLE_ADMIN')
+@Secured(['ROLE_ADMIN','permitAll'])
 class NewsController {
     static responseFormats = ['json']
     NewsService newsService
 
-    @Secured('permitAll')
+    //@Secured('permitAll')
     def index(IndexCommand command, PaginateCommand paginate) {
         PagedResultList list = newsService.index(command,paginate)
         respond([news: list])
