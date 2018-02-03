@@ -4,5 +4,4 @@ model {
 
 json {
 	mediaId multimedia.mediaId
-
 }

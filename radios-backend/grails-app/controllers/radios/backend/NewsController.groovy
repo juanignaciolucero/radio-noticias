@@ -16,7 +16,7 @@ class NewsController {
     NewsService newsService
     //@Secured('permitAll')
     def index(IndexCommand command, PaginateCommand paginate) {
-        PagedResultList list = newsService.index(command,paginate)
+        PagedResultList list = newsService.index(command, paginate)
         respond([news: list])
     }
 
@@ -47,10 +47,8 @@ class NewsController {
         }
     }
 
-
-    def amazonS3Service
     def addMultimedia(AddMultimediaCommand command) {
-        if(!command.hasErrors()) {
+        if (!command.hasErrors()) {
             respond(newsService.addMultimedia(command))
         } else {
             respond(command.errors)

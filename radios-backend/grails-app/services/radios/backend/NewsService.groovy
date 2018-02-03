@@ -53,7 +53,7 @@ class NewsService {
     def addMultimedia(AddMultimediaCommand command) {
         News news = command.news
         Multimedia multimedia = new Multimedia(type: command.type)
-        if (multimedia == MultimediaType.AUDIO){
+        if (multimedia.type == MultimediaType.AUDIO){
             news.audio = multimedia
         }else {
             news.image = multimedia
