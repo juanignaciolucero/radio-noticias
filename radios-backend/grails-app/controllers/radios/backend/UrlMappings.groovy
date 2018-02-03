@@ -13,10 +13,10 @@ class UrlMappings {
         "/"(controller: 'application', action:'index')*/
 
         group("/api") {
-            "/news"(resources:"news") {
-                "/multimedias"(controller: "news", action: "addMultimedia", method: "POST")
-            }
-
+            "/news"(resources: "news")
+            "/radios"(resources: "radio")
+            "/categories"(resources: "newsCategory")
+            "/multimedia"(resources: "multimedia")
         }
 
         "500"(view: '/error')

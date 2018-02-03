@@ -1,0 +1,7 @@
+import radios.backend.NewsCategory
+
+model {
+	NewsCategory newsCategory
+}
+
+json g.render(newsCategory, [resolveTemplate: false])

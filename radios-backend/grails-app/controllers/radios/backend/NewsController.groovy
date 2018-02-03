@@ -1,13 +1,11 @@
 package radios.backend
 
-import Command.news.AddMultimediaCommand
+import Command.news.IndexCommand
+import Command.news.SaveCommand
+import Command.news.UpdateCommand
 import commons.PaginateCommand
 import grails.gorm.PagedResultList
 import grails.plugin.springsecurity.annotation.Secured
-import Command.news.IndexCommand
-import Command.news.SaveCommand
-
-import Command.news.UpdateCommand
 import org.springframework.http.HttpStatus
 
 @Secured(['permitAll'])
@@ -44,14 +42,6 @@ class NewsController {
         } else {
             response.setStatus(HttpStatus.NOT_FOUND.value())
             respond([:])
-        }
-    }
-
-    def addMultimedia(AddMultimediaCommand command) {
-        if (!command.hasErrors()) {
-            respond(newsService.addMultimedia(command))
-        } else {
-            respond(command.errors)
         }
     }
 }
