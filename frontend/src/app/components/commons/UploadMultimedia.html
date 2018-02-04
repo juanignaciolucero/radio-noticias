@@ -1,0 +1,31 @@
+<div class="component">
+  <div class="upload-widget">
+    <div style="background: url('{{$ctrl.imageUrl}}') no-repeat center center;" class="bg {{$ctrl.type}}-placeholder"></div>
+    <div ng-if="!$ctrl.uploading" class="text-center select">
+      <div ng-if="$ctrl.type === 'AUDIO' && $ctrl.mediaId">
+        <p>Audio actual:</p>
+        <p>{{$ctrl.fileName}}</p>
+        <hr>
+      </div>
+
+      <h5>Seleccione archivo</h5>
+      <div
+        class="btn btn-primary btn-upload"
+        upload-button
+        param="file"
+        data="{type: $ctrl.type}"
+        accept="{{['image/jpeg', 'image/jpg']}}"
+        url="{{$ctrl.endPoint}}"
+        on-upload="$ctrl.onUpload(files)"
+        on-success="$ctrl.onSuccess(response)"
+        on-error="$ctrl.onError(response)"
+        on-complete="$ctrl.onComplete(response)">
+          Subir
+      </div>
+    </div>
+    <div ng-show="$ctrl.uploading" class="text-center select">
+      <h5>Subiendo...</h5>
+      <div id="spinner" class="text-center" data-spinner='{"radius": 25}'></div>
+    </div>
+  </div>
+</div>

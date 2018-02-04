@@ -3,12 +3,13 @@
     <div class="card-header" data-background-color="blue">
       <h4 class="title">Listado de noticias</h4>
     </div>
-
-    <div class="card-content table-responsive">
+    <div ng-if="$ctrl.loading" id="spinner" class="text-center" data-spinner='{"radius": 25}'></div>
+    <div ng-if="!$ctrl.loading" class="card-content table-responsive">
       <table class="table">
         <thead>
         <th>Titulo</th>
         <th>Radios</th>
+        <th>Categoria</th>
         <th>Destacada</th>
         <th>Activa</th>
         <th>Acciones</th>
@@ -20,6 +21,7 @@
               {{radio.name}}
             </span>
           </td>
+          <td>{{news.newsCategory.id}}</td>
           <td>{{(news.featured)? 'Si' : 'No'}}</td>
           <td>{{(news.enabled)? 'Si' : 'No'}}</td>
           <td>
@@ -37,7 +39,6 @@
       <div class="text-center">
         <ul uib-pagination total-items="$ctrl.totalCount" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"></ul>
       </div>
-
     </div>
   </div>
 

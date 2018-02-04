@@ -19,6 +19,11 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
       component: 'newsCreate'
     }).state('app.newsEdit', {
       url: 'news/edit/:id',
-      component: 'newsCreate'
+      component: 'newsEdit',
+      resolve: {
+        news: (Restangular, $stateParams) => {
+          return Restangular.one('news', $stateParams.id).get();
+        }
+      }
     });
 }

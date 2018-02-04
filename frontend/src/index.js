@@ -17,10 +17,15 @@ import {TodoItem} from './app/components/TodoItem';
 import {Footer} from './app/components/Footer';
 import {NewsList} from './app/components/news/NewsList';
 import {NewsCreate} from './app/components/news/NewsCreate';
+import {NewsEdit} from './app/components/news/NewsEdit';
+import {NewsForm} from './app/components/news/NewsForm';
+import {UploadMultimedia} from './app/components/commons/UploadMultimedia';
 
 import 'angular-ui-router';
 import 'restangular';
 import 'angular-ui-bootstrap';
+import 'material-spinner';
+import 'angular-upload';
 
 import routesConfig from './routes';
 import restangularConfig from './restangular';
@@ -28,7 +33,7 @@ import restangularConfig from './restangular';
 import './index.scss';
 
 angular
-  .module('app', ['ui.router', 'restangular', 'ui.bootstrap'])
+  .module('app', ['ui.router', 'restangular', 'ui.bootstrap', 'lr.upload'])
   .config(routesConfig)
   .run(restangularConfig)
   .service('todoService', TodoService)
@@ -40,4 +45,7 @@ angular
   .component('todoTextInput', TodoTextInput)
   .component('todoItem', TodoItem)
   .component('newsList', NewsList)
-  .component('newsCreate', NewsCreate);
+  .component('newsCreate', NewsCreate)
+  .component('newsEdit', NewsEdit)
+  .component('newsForm', NewsForm)
+  .component('uploadMultimedia', UploadMultimedia);
