@@ -1,11 +1,15 @@
 import {MULTIMEDIA_URL, BACKEND_URL} from '../../constants/Metadata';
 
 class UploadMultimediaController {
-  constructor() {
+  constructor($log) {
     this.uploading = false;
     this.endPoint = `${BACKEND_URL}/api/multimedia`;
     this.imageUrl = '';
+    if (this.mediaId) {
+      this.imageUrl = this.getMultimediaUrl(this.mediaId, this.type, this.extension);
+    }
     this.fileName = null;
+    $log.info(this);
   }
 
   onUpload(files) {
@@ -40,6 +44,8 @@ export const UploadMultimedia = {
   template: require('./UploadMultimedia.html'),
   controller: UploadMultimediaController,
   bindings: {
+    extension: '@',
+    fileName: '@',
     mediaId: '=',
     type: '@'
   }

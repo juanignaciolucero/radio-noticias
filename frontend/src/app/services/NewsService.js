@@ -15,6 +15,8 @@ export class NewsService {
       description: news.description,
       radios: news.radios,
       newsCategory: news.category,
+      audio: news.audio,
+      image: news.image,
       user: {
         id: 1
       },

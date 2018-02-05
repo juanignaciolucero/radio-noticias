@@ -10,6 +10,7 @@ import {TodoService} from './app/todos/todos';
 import {NewsService} from './app/services/NewsService';
 
 import {App} from './app/containers/App';
+import {Auth} from './app/containers/Auth';
 import {Header} from './app/components/Header';
 import {MainSection} from './app/components/MainSection';
 import {TodoTextInput} from './app/components/TodoTextInput';
@@ -20,12 +21,15 @@ import {NewsCreate} from './app/components/news/NewsCreate';
 import {NewsEdit} from './app/components/news/NewsEdit';
 import {NewsForm} from './app/components/news/NewsForm';
 import {UploadMultimedia} from './app/components/commons/UploadMultimedia';
+import {AuthLogout} from './app/components/auth/AuthLogout';
+import {AuthLogin} from './app/components/auth/AuthLogin';
 
 import 'angular-ui-router';
 import 'restangular';
 import 'angular-ui-bootstrap';
 import 'material-spinner';
 import 'angular-upload';
+import 'angular-cookies';
 
 import routesConfig from './routes';
 import restangularConfig from './restangular';
@@ -33,12 +37,13 @@ import restangularConfig from './restangular';
 import './index.scss';
 
 angular
-  .module('app', ['ui.router', 'restangular', 'ui.bootstrap', 'lr.upload'])
+  .module('app', ['ui.router', 'restangular', 'ui.bootstrap', 'lr.upload', 'ngCookies'])
   .config(routesConfig)
   .run(restangularConfig)
   .service('todoService', TodoService)
   .service('newsService', NewsService)
   .component('app', App)
+  .component('auth', Auth)
   .component('headerComponent', Header)
   .component('footerComponent', Footer)
   .component('mainSection', MainSection)
@@ -48,4 +53,24 @@ angular
   .component('newsCreate', NewsCreate)
   .component('newsEdit', NewsEdit)
   .component('newsForm', NewsForm)
-  .component('uploadMultimedia', UploadMultimedia);
+  .component('uploadMultimedia', UploadMultimedia)
+  .component('authLogout', AuthLogout)
+  .component('authLogin', AuthLogin)
+  .factory('sessionInjector', ($cookies, $q, $state) => {
+    return {
+      request: config => {
+        config.headers['X-AUTH-TOKEN'] = $cookies.get('access_token');
+        return config;
+      },
+      responseError: response => {
+        if (response.status === 401) {
+          $cookies.remove('access_token');
+          $state.go('auth.authLogin');
+        }
+        return $q.reject(response);
+      }
+    };
+  })
+  .config(['$httpProvider', $httpProvider => {
+    $httpProvider.interceptors.push('sessionInjector');
+  }]);
