@@ -1,0 +1,8 @@
+import radios.backend.Multimedia
+
+model {
+	Iterable<Multimedia> multimediaList
+}
+
+json tmpl.multimedia(multimediaList ?: [])
+

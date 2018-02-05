@@ -1,21 +1,18 @@
-package Command.news
+package Command.multimedia
 
 import enums.MultimediaType
 import grails.validation.Validateable
 import org.springframework.web.multipart.MultipartFile
-import radios.backend.News
 import utils.FileUtils
 
-
-class AddMultimediaCommand implements Validateable {
+class SaveCommand implements Validateable {
     MultipartFile file
-    News news
     MultimediaType type
+
     static constraints = {
         file validator: { file, obj ->
             return (file && !file.empty && obj.validate(file, obj.type))
         }
-
     }
 
     Boolean validate(MultipartFile file, MultimediaType type) {
