@@ -8,7 +8,7 @@ import grails.gorm.PagedResultList
 import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.http.HttpStatus
 
-@Secured(['permitAll'])
+@Secured(['ROLE_ADMIN'])
 class NewsController {
     static responseFormats = ['json']
     NewsService newsService

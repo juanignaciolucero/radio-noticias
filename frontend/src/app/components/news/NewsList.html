@@ -15,7 +15,8 @@
         <th>Acciones</th>
         <tr ng-repeat="news in $ctrl.news">
           <td>
-            <a href="#">{{news.title}}</a></td>
+            {{news.title}}
+          </td>
           <td>
             <span style="margin: 1px;" ng-repeat="radio in news.radios" class="label label-primary">
               {{radio.name}}

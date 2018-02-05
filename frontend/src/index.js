@@ -8,7 +8,7 @@ import './assets/libs/material-dashboard-v1.2.0/assets/js/material-dashboard';
 
 import {TodoService} from './app/todos/todos';
 import {NewsService} from './app/services/NewsService';
-
+import {AuthService} from './app/services/AuthService';
 import {App} from './app/containers/App';
 import {Auth} from './app/containers/Auth';
 import {Header} from './app/components/Header';
@@ -30,18 +30,28 @@ import 'angular-ui-bootstrap';
 import 'material-spinner';
 import 'angular-upload';
 import 'angular-cookies';
+import 'angular-permission';
+import 'angular-route';
 
 import routesConfig from './routes';
 import restangularConfig from './restangular';
+import X_AUTH_TOKEN from './app/constants/Metadata';
 
 import './index.scss';
 
 angular
-  .module('app', ['ui.router', 'restangular', 'ui.bootstrap', 'lr.upload', 'ngCookies'])
-  .config(routesConfig)
+  .module('app', ['ui.router', 'restangular', 'ui.bootstrap', 'lr.upload', 'ngCookies', 'ngRoute', 'permission', 'permission.ng'])
   .run(restangularConfig)
+  .run(PermPermissionStore => {
+    PermPermissionStore
+      .definePermission('isAuthenticated', authService => {
+        return authService.isAuthenticated();
+      });
+  })
+  .config(routesConfig)
   .service('todoService', TodoService)
   .service('newsService', NewsService)
+  .service('authService', AuthService)
   .component('app', App)
   .component('auth', Auth)
   .component('headerComponent', Header)
@@ -59,12 +69,12 @@ angular
   .factory('sessionInjector', ($cookies, $q, $state) => {
     return {
       request: config => {
-        config.headers['X-AUTH-TOKEN'] = $cookies.get('access_token');
+        config.headers['X-AUTH-TOKEN'] = $cookies.get(X_AUTH_TOKEN);
         return config;
       },
       responseError: response => {
-        if (response.status === 401) {
-          $cookies.remove('access_token');
+        if (response.status === 401 || response.status === 403) {
+          $cookies.remove(X_AUTH_TOKEN);
           $state.go('auth.authLogin');
         }
         return $q.reject(response);

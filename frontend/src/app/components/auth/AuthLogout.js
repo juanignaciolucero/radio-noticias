@@ -1,11 +1,11 @@
 class AuthLogoutController {
-  constructor() {
-    this.text = 'logout';
+  constructor($state, authService) {
+    authService.logout();
+    $state.go('auth.authLogin');
   }
 }
 
 export const AuthLogout = {
-  template: require('./AuthLogout.html'),
   controller: AuthLogoutController
 };
 
