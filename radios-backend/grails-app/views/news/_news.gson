@@ -3,20 +3,27 @@ import radios.backend.News
 model {
     News news
 }
+
 def userParse = [
-    id: news.user.id
+    id: news.user.id,
+    firstName: news.user.firstName,
+    lastName: news.user.lastName,
 ]
+
 def categoryParse = [
-    id: news.newsCategory.id
+    id: news.newsCategory.id,
+    name: news.newsCategory.name
 ]
 
 json {
     id news.id
     radios news.radios.collect { [id: it.id, name: it.name] }
     title news.title
-    news news.description
+    description news.description
     featured news.featured
     enabled news.enabled
     newsCategory categoryParse
     user userParse
+    audio tmpl.multimedia(news.audio)
+    image tmpl.multimedia(news.image)
 }

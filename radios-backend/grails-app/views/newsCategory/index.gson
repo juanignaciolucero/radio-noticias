@@ -1,0 +1,8 @@
+import radios.backend.NewsCategory
+
+model {
+	Iterable<NewsCategory> newsCategoryList
+}
+
+json tmpl.newsCategory(newsCategoryList ?: [])
+

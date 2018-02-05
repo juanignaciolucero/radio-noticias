@@ -7,6 +7,8 @@ class News {
     Boolean enabled = true
     NewsCategory newsCategory
     User user
+    Multimedia audio
+    Multimedia image
     static hasMany = [radios: Radio]
     static constraints = {
         title nullable: false, blank: false
@@ -16,5 +18,7 @@ class News {
         newsCategory nullable: false
         user nullable: false
         radios minSize: 1, nullable: false
+        audio nullable: true
+        image nullable: true
     }
 }

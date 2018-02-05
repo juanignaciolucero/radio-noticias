@@ -1,7 +1,11 @@
 package radios.backend
 
-class BootStrap {
+import grails.core.GrailsApplication
+import grails.plugin.awssdk.s3.AmazonS3Service
 
+class BootStrap {
+    AmazonS3Service amazonS3Service
+    GrailsApplication grailsApplication
     def init = { servletContext ->
         Role role = Role.findOrCreateByAuthority("ROLE_ADMIN").save()
         User user = User.findByUsername("admin")
@@ -19,7 +23,7 @@ class BootStrap {
         Radio.findOrCreateByName("VALENOVENTAICIETESINCO").save()
         NewsCategory.findOrCreateByName("Otros").save()
 
-
+        amazonS3Service.createBucket(grailsApplication.config.getProperty('aws.s3.bucket.name'))
     }
     def destroy = {
     }

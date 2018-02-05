@@ -2,6 +2,7 @@ buildscript {
     repositories {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
+
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
@@ -26,6 +27,7 @@ apply plugin:"org.grails.plugins.views-json"
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url 'http://dl.bintray.com/agorapulse/libs' }
 }
 
 dependencies {
@@ -66,6 +68,7 @@ dependencies {
     compile 'org.grails.plugins:spring-security-core:3.2.0'
     compile "org.grails.plugins:spring-security-rest:2.0.0.M2"
     runtime 'mysql:mysql-connector-java:6.0.6'
+    compile 'org.grails.plugins:aws-sdk-s3:2.1.11'
 }
 
 bootRun {

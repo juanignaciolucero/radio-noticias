@@ -1,0 +1,7 @@
+import radios.backend.Multimedia
+
+model {
+	Multimedia multimedia
+}
+
+json tmpl.multimedia(multimedia)

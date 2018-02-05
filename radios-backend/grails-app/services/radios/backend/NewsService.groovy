@@ -1,16 +1,14 @@
 package radios.backend
 
+import Command.news.IndexCommand
+import Command.news.SaveCommand
+import Command.news.UpdateCommand
 import commons.PaginateCommand
 import grails.gorm.transactions.Transactional
 
-import news.IndexCommand
-import news.SaveCommand
-
-import news.UpdateCommand
-
 @Transactional
 class NewsService {
-
+    CloudService cloudService
     News save(SaveCommand command) {
         News news = new News(command.params())
         news.validate()
@@ -47,5 +45,4 @@ class NewsService {
         }
         return news
     }
-
 }

@@ -5,52 +5,53 @@ import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
 @Secured(['permitAll'])
-class RadioController {
 
-    RadioService radioService
+class NewsCategoryController {
+
+    NewsCategoryService newsCategoryService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond radioService.list(params), model:[radioCount: radioService.count()]
+        respond newsCategoryService.list(params), model:[newsCategoryCount: newsCategoryService.count()]
     }
 
     def show(Long id) {
-        respond radioService.get(id)
+        respond newsCategoryService.get(id)
     }
 
-    def save(Radio radio) {
-        if (radio == null) {
+    def save(NewsCategory newsCategory) {
+        if (newsCategory == null) {
             render status: NOT_FOUND
             return
         }
 
         try {
-            radioService.save(radio)
+            newsCategoryService.save(newsCategory)
         } catch (ValidationException e) {
-            respond radio.errors, view:'create'
+            respond newsCategory.errors, view:'create'
             return
         }
 
-        respond radio, [status: CREATED, view:"show"]
+        respond newsCategory, [status: CREATED, view:"show"]
     }
 
-    def update(Radio radio) {
-        if (radio == null) {
+    def update(NewsCategory newsCategory) {
+        if (newsCategory == null) {
             render status: NOT_FOUND
             return
         }
 
         try {
-            radioService.save(radio)
+            newsCategoryService.save(newsCategory)
         } catch (ValidationException e) {
-            respond radio.errors, view:'edit'
+            respond newsCategory.errors, view:'edit'
             return
         }
 
-        respond radio, [status: OK, view:"show"]
+        respond newsCategory, [status: OK, view:"show"]
     }
 
     def delete(Long id) {
@@ -59,7 +60,7 @@ class RadioController {
             return
         }
 
-        radioService.delete(id)
+        newsCategoryService.delete(id)
 
         render status: NO_CONTENT
     }

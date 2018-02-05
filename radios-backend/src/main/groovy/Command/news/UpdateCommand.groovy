@@ -1,4 +1,4 @@
-package news
+package Command.news
 
 import radios.backend.News
 

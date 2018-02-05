@@ -1,0 +1,7 @@
+import radios.backend.Multimedia
+
+model {
+	Multimedia multimedia
+}
+
+json g.render(multimedia, [resolveTemplate: false])
