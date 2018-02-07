@@ -16,10 +16,11 @@ class News {
 
     static mapping = {
         autoTimestamp: true
+        description type: 'text'
     }
 
     static constraints = {
-        title nullable: false, blank: false
+        title nullable: false, blank: false, maxSize: 255
         description nullable: false, blank: false
         featured nullable: false
         enabled nullable: false
