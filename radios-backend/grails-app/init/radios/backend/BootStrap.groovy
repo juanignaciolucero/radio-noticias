@@ -22,11 +22,7 @@ class BootStrap {
 
         Radio.findOrCreateByName("VALENOVENTAICIETESINCO").save()
         NewsCategory.findOrCreateByName("Otros").save()
-        try {
-            amazonS3Service.createBucket(grailsApplication.config.getProperty('aws.s3.bucket.name'))
-        } catch (e) {
-
-        }
+        amazonS3Service.createBucket(grailsApplication.config.getProperty('aws.s3.bucket.name'))
     }
     def destroy = {
     }

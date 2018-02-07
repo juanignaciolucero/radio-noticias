@@ -4,8 +4,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
-@Secured(['permitAll'])
-
+@Secured(['ROLE_ADMIN'])
 class NewsCategoryController {
 
     NewsCategoryService newsCategoryService

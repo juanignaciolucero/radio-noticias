@@ -8,7 +8,7 @@ import radios.backend.User
 class NewsHolder implements grails.validation.Validateable {
     String title
     String description
-    Boolean featured
+    Boolean featured = false
     Boolean enabled
     String audio
     String image

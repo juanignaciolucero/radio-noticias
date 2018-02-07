@@ -3,7 +3,7 @@ package radios.backend
 import Command.multimedia.SaveCommand
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured(['permitAll'])
+@Secured(['ROLE_ADMIN'])
 class MultimediaController {
 
     MultimediaService multimediaService
