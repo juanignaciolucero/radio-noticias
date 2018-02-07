@@ -24,10 +24,10 @@ json {
     enabled news.enabled
     newsCategory categoryParse
     user userParse
-    if(news.image){
+    if (news.image) {
         image tmpl.'/multimedia/multimedia'(multimedia : news.image)
     }
-    if(news.audio){
+    if (news.audio) {
         audio tmpl.'/multimedia/multimedia'(multimedia : news.audio)
     }
 }

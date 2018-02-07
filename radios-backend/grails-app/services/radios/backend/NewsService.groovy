@@ -23,6 +23,9 @@ class NewsService {
             if (!command.showDisabled) {
                 eq("enabled", true)
             }
+            if (command.featured) {
+                eq("featured", true)
+            }
             if (command.radio) {
                 radios {
                     eq("id", command.radio.id)

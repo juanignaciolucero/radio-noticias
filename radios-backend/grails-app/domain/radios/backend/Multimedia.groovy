@@ -7,12 +7,18 @@ class Multimedia {
     MultimediaType type
     String extension
     String name
+    Date dateCreated
+    Date lastUpdated
 
     static constraints = {
         mediaId nullable: false
         type nullable: false
         extension nullable: false
         name nullable: false
+    }
+
+    static mapping = {
+        autoTimestamp: true
     }
 
     String getPath() {

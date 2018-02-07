@@ -19,6 +19,8 @@ class User implements Serializable {
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
+    Date dateCreated
+    Date lastUpdated
 
     Set<Role> getAuthorities() {
         (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
@@ -33,6 +35,7 @@ class User implements Serializable {
 
     static mapping = {
         password column: '`password`'
+        autoTimestamp: true
     }
 }
 
