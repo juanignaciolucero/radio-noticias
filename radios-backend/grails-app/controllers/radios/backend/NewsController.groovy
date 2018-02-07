@@ -8,11 +8,11 @@ import grails.gorm.PagedResultList
 import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.http.HttpStatus
 
-@Secured(['permitAll'])
+@Secured(['ROLE_ADMIN'])
 class NewsController {
     static responseFormats = ['json']
     NewsService newsService
-    //@Secured('permitAll')
+    @Secured('permitAll')
     def index(IndexCommand command, PaginateCommand paginate) {
         PagedResultList list = newsService.index(command, paginate)
         respond([news: list])

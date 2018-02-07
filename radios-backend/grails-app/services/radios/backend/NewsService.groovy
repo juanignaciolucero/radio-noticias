@@ -9,6 +9,7 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class NewsService {
     CloudService cloudService
+
     News save(SaveCommand command) {
         News news = new News(command.params())
         news.validate()
@@ -22,6 +23,11 @@ class NewsService {
         return News.createCriteria().list(paginate.params()) {
             if (!command.showDisabled) {
                 eq("enabled", true)
+            }
+            if (command.featured) {
+                eq("featured", command.featured)
+            } else {
+                eq("featured", false)
             }
             if (command.radio) {
                 radios {

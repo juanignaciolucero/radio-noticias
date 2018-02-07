@@ -4,4 +4,11 @@ model {
 	Multimedia multimedia
 }
 
-json g.render(multimedia, [resolveTemplate: false])
+
+json {
+	mediaId multimedia.mediaId
+	type multimedia.type
+	extension multimedia.extension
+	name multimedia.name
+	url Multimedia.getUrl(multimedia)
+}

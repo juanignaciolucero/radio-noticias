@@ -1,9 +1,11 @@
 package radios.backend
 
 import grails.core.GrailsApplication
+import grails.plugin.springsecurity.annotation.Secured
 import grails.util.Environment
 import grails.plugins.*
 
+@Secured(['ROLE_ADMIN'])
 class ApplicationController implements PluginManagerAware {
 
     GrailsApplication grailsApplication

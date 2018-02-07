@@ -24,6 +24,10 @@ json {
     enabled news.enabled
     newsCategory categoryParse
     user userParse
-    audio tmpl.multimedia(news.audio)
-    image tmpl.multimedia(news.image)
+    if (news.image) {
+        image tmpl.'/multimedia/multimedia'(multimedia : news.image)
+    }
+    if (news.audio) {
+        audio tmpl.'/multimedia/multimedia'(multimedia : news.audio)
+    }
 }
