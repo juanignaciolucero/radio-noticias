@@ -8,7 +8,6 @@ import grails.gorm.transactions.Transactional
 
 @Transactional
 class NewsService {
-    CloudService cloudService
 
     News save(SaveCommand command) {
         News news = new News(command.params())
@@ -26,8 +25,6 @@ class NewsService {
             }
             if (command.featured) {
                 eq("featured", command.featured)
-            } else {
-                eq("featured", false)
             }
             if (command.radio) {
                 radios {

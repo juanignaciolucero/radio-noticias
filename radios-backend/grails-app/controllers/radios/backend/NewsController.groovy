@@ -12,12 +12,14 @@ import org.springframework.http.HttpStatus
 class NewsController {
     static responseFormats = ['json']
     NewsService newsService
+
     @Secured('permitAll')
     def index(IndexCommand command, PaginateCommand paginate) {
         PagedResultList list = newsService.index(command, paginate)
         respond([news: list])
     }
 
+    @Secured('permitAll')
     def show(News news) {
         if (news) {
             respond(news)
