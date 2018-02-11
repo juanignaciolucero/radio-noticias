@@ -1,4 +1,4 @@
-import X_AUTH_TOKEN from '../constants/Metadata';
+import {X_AUTH_TOKEN} from '../constants/Metadata';
 
 export class AuthService {
   constructor($cookies) {

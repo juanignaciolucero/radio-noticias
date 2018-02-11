@@ -25,7 +25,7 @@ class UploadMultimediaController {
   onSuccess(response) {
     this.mediaId = response.data.mediaId;
     if (this.type === 'IMAGE') {
-      this.imageUrl = this.getMultimediaUrl(this.mediaId, this.type, response.data.extension);
+      this.imageUrl = response.data.url;
     }
     return response;
   }

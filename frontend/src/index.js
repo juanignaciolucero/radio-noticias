@@ -34,14 +34,19 @@ import 'angular-permission';
 import 'angular-route';
 
 import routesConfig from './routes';
-import restangularConfig from './restangular';
-import X_AUTH_TOKEN from './app/constants/Metadata';
+import {X_AUTH_TOKEN, BACKEND_URL} from './app/constants/Metadata';
 
 import './index.scss';
 
 angular
   .module('app', ['ui.router', 'restangular', 'ui.bootstrap', 'lr.upload', 'ngCookies', 'ngRoute', 'permission', 'permission.ng'])
-  .run(restangularConfig)
+  .run(Restangular => {
+    Restangular.setBaseUrl(BACKEND_URL + '/api');
+    Restangular.setDefaultHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    });
+  })
   .run(PermPermissionStore => {
     PermPermissionStore
       .definePermission('isAuthenticated', authService => {
@@ -69,7 +74,7 @@ angular
   .factory('sessionInjector', ($cookies, $q, $state) => {
     return {
       request: config => {
-        config.headers['X-AUTH-TOKEN'] = $cookies.get(X_AUTH_TOKEN);
+        config.headers['X-AUTH-TOKEN'] = $cookies.get('X-AUTH-TOKEN');
         return config;
       },
       responseError: response => {
