@@ -6,38 +6,72 @@ import './assets/libs/material-dashboard-v1.2.0/assets/css/material-dashboard.cs
 import './assets/libs/material-dashboard-v1.2.0/assets/js/material.min';
 import './assets/libs/material-dashboard-v1.2.0/assets/js/material-dashboard';
 
-import {TodoService} from './app/todos/todos';
 import {NewsService} from './app/services/NewsService';
-
+import {AuthService} from './app/services/AuthService';
 import {App} from './app/containers/App';
-import {Header} from './app/components/Header';
-import {MainSection} from './app/components/MainSection';
-import {TodoTextInput} from './app/components/TodoTextInput';
-import {TodoItem} from './app/components/TodoItem';
-import {Footer} from './app/components/Footer';
+import {Auth} from './app/containers/Auth';
 import {NewsList} from './app/components/news/NewsList';
 import {NewsCreate} from './app/components/news/NewsCreate';
+import {NewsEdit} from './app/components/news/NewsEdit';
+import {NewsForm} from './app/components/news/NewsForm';
+import {UploadMultimedia} from './app/components/commons/UploadMultimedia';
+import {AuthLogout} from './app/components/auth/AuthLogout';
+import {AuthLogin} from './app/components/auth/AuthLogin';
 
 import 'angular-ui-router';
 import 'restangular';
 import 'angular-ui-bootstrap';
+import 'material-spinner';
+import 'angular-upload';
+import 'angular-cookies';
+import 'angular-permission';
+import 'angular-route';
+import 'angular-bootstrap-show-errors';
 
 import routesConfig from './routes';
-import restangularConfig from './restangular';
+import sessionInjector from './sessionInjector';
+import {BACKEND_URL} from './app/constants/Metadata';
 
 import './index.scss';
 
 angular
-  .module('app', ['ui.router', 'restangular', 'ui.bootstrap'])
+  .module('app', [
+    'ui.router',
+    'restangular',
+    'ui.bootstrap',
+    'lr.upload',
+    'ngCookies',
+    'ngRoute',
+    'permission',
+    'permission.ng',
+    'ui.bootstrap.showErrors'
+  ])
+  .run(['Restangular', Restangular => {
+    Restangular.setBaseUrl(BACKEND_URL + '/api');
+    Restangular.setDefaultHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    });
+  }])
+  .run(['PermPermissionStore', PermPermissionStore => {
+    PermPermissionStore
+      .definePermission('isAuthenticated', authService => {
+        return authService.isAuthenticated();
+      });
+  }])
   .config(routesConfig)
-  .run(restangularConfig)
-  .service('todoService', TodoService)
   .service('newsService', NewsService)
+  .service('authService', AuthService)
   .component('app', App)
-  .component('headerComponent', Header)
-  .component('footerComponent', Footer)
-  .component('mainSection', MainSection)
-  .component('todoTextInput', TodoTextInput)
-  .component('todoItem', TodoItem)
+  .component('auth', Auth)
   .component('newsList', NewsList)
-  .component('newsCreate', NewsCreate);
+  .component('newsCreate', NewsCreate)
+  .component('newsEdit', NewsEdit)
+  .component('newsForm', NewsForm)
+  .component('uploadMultimedia', UploadMultimedia)
+  .component('authLogout', AuthLogout)
+  .component('authLogin', AuthLogin)
+  .factory('sessionInjector', ['$cookies', '$q', '$state', sessionInjector])
+  .config(['$httpProvider', $httpProvider => {
+    $httpProvider.interceptors.push('sessionInjector');
+  }]);

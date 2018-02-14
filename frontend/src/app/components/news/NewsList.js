@@ -3,8 +3,9 @@ class NewsListController {
     this.Restangular = Restangular;
     this.news = [];
     this.totalCount = 0;
-    this.currentPage = 0;
+    this.currentPage = 1;
     this.getNews();
+    this.loading = false;
   }
 
   pageChanged() {
@@ -12,15 +13,18 @@ class NewsListController {
   }
   getNews() {
     const ctrl = this;
+    ctrl.loading = true;
     ctrl.Restangular.all('news').customGET('', {
       offset: (ctrl.currentPage - 1) * 10
     }).then(rsp => {
       ctrl.news = rsp.news;
       ctrl.totalCount = rsp.totalCount;
+    }).finally(() => {
+      ctrl.loading = false;
     });
   }
   deleteNews(id) {
-    this.Restangular.one('news', id).remove(() => {
+    this.Restangular.one('news', id).remove().then(() => {
       this.news = this.news.filter(news => {
         return news.id !== id;
       });
@@ -30,6 +34,6 @@ class NewsListController {
 
 export const NewsList = {
   template: require('./NewsList.html'),
-  controller: NewsListController
+  controller: ['Restangular', NewsListController]
 };
 
