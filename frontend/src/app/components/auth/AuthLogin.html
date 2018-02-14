@@ -7,6 +7,12 @@
             <h4 class="title text-center">Inicia sesión</h4>
           </div>
           <div class="card-body">
+
+            <div ng-if="$ctrl.error" class="alert alert-danger alert-dismissable">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              Usuario o contraseña incorrecta.
+            </div>
+
             <div class="input-group">
               <span class="input-group-addon">
                   <i class="material-icons">face</i>
@@ -29,7 +35,7 @@
 
           </div>
           <div class="card-footer text-center justify-content-center">
-            <button type="submit" class="btn btn-link btn-primary">Login</button>
+            <button ng-disabled="$ctrl.loading" type="submit" class="btn btn-link btn-primary">Login</button>
           </div>
         </form>
       </div>

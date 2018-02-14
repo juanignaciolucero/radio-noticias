@@ -6,6 +6,6 @@ class AuthLogoutController {
 }
 
 export const AuthLogout = {
-  controller: AuthLogoutController
+  controller: ['$state', 'authService', AuthLogoutController]
 };
 

@@ -1,6 +1,7 @@
 import {X_AUTH_TOKEN} from '../constants/Metadata';
 
 export class AuthService {
+  /** @ngInject */
   constructor($cookies) {
     this.$cookies = $cookies;
   }

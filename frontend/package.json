@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "angular": "^1.6.2",
+    "angular-bootstrap-show-errors": "^2.3.0",
     "angular-cookies": "^1.6.9",
     "angular-permission": "^6.0.0",
     "angular-route": "^1.6.9",

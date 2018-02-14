@@ -1,7 +1,7 @@
 <div class="component">
   <div class="row">
     <div class="col-sm-12 col-lg-8 col-lg-offset-2">
-      <form ng-submit="$ctrl.onSave()">
+      <form name="form" ng-submit="$ctrl.onSave()">
         <div class="card">
           <div class="card-header" data-background-color="blue">
             <h4 class="title">Noticia</h4>
@@ -9,24 +9,28 @@
           <div class="card-body">
             <form ng-submit="onSave()">
               <div class="col-sm-6">
-                <div class="form-group label-floating">
+                <div class="form-group label-floating show-errors">
                   <label class="control-label">Titulo</label>
-                  <input ng-model="$ctrl.news.title" type="text" class="form-control">
+                  <input ng-required="true" ng-model="$ctrl.news.title" type="text" class="form-control">
                 </div>
                 <div class="form-group label-floating">
                   <label class="control-label">Descricion</label>
-                  <textarea ng-model="$ctrl.news.description" class="form-control"></textarea>
+                  <textarea rows="8" ng-required="true" ng-model="$ctrl.news.description" class="form-control"></textarea>
                 </div>
                 <div class="form-group label-floating">
                   <label class="control-label">Radios</label>
-                  <select class="form-control" name="radios" ng-model="$ctrl.news.radios" multiple>
-                    <option ng-repeat="radio in $ctrl.radios" ng-value="radio">{{radio.name}}</option>
+                  <select name="radios" ng-required="true" class="form-control" multiple
+                          ng-options='radio.id as radio.name for radio in $ctrl.radios'
+                          ng-model="$ctrl.radiosSelected">
                   </select>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Categoria</label>
-                  <select class="form-control" name="radios" ng-model="$ctrl.news.category">
-                    <option ng-repeat="category in $ctrl.categories" ng-value="category">{{category.name}}</option>
+                  <select class="form-control" ng-model="$ctrl.news.newsCategory.id">
+                    <option ng-selected="category.id === $ctrl.news.newsCategory.id"
+                            ng-repeat="category in $ctrl.categories" ng-value="category.id">
+                      {{category.name}}
+                    </option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -35,32 +39,27 @@
                     Destacada
                   </label>
                 </div>
-                <div class="form-group">
-                  <label>
-                    <input type="checkbox" ng-model="$ctrl.news.enabled" name="enabled">
-                    Activa
-                  </label>
-                </div>
               </div>
               <div class="col-sm-6">
                 <p>Imagen:</p>
-                <upload-multimedia type="IMAGE"
-                                   file-name=""
-                                   media-id="$ctrl.news.image">
-
-                </upload-multimedia>
+                <upload-multimedia
+                  type="IMAGE"
+                  media="$ctrl.news.image"></upload-multimedia>
+                <input type="hidden" name="imageId" ng-model="$ctrl.news.image.mediaId" ng-required="true">
                 <hr>
                 <p>Audio:</p>
-                <upload-multimedia type="AUDIO" media-id="$ctrl.news.audio"></upload-multimedia>
+                <upload-multimedia
+                  type="AUDIO"
+                  media="$ctrl.news.audio"></upload-multimedia>
               </div>
-
               <div class="col-sm-12">
                 <hr>
                 <div class="text-right">
                   <a ui-sref="app.newsList" type="button" class="btn btn-danger bottom-right">
                     Cancelar
                   </a>
-                  <button type="submit" class="btn btn-primary bottom-right">
+
+                  <button ng-disabled="form.$invalid" type="submit" class="btn btn-primary bottom-right">
                     Guardar
                   </button>
                 </div>

@@ -1,15 +1,10 @@
-import {MULTIMEDIA_URL, BACKEND_URL} from '../../constants/Metadata';
+import {BACKEND_URL} from '../../constants/Metadata';
 
 class UploadMultimediaController {
-  constructor($log) {
+  constructor() {
     this.uploading = false;
     this.endPoint = `${BACKEND_URL}/api/multimedia`;
-    this.imageUrl = '';
-    if (this.mediaId) {
-      this.imageUrl = this.getMultimediaUrl(this.mediaId, this.type, this.extension);
-    }
     this.fileName = null;
-    $log.info(this);
   }
 
   onUpload(files) {
@@ -18,15 +13,9 @@ class UploadMultimediaController {
     return files;
   }
 
-  getMultimediaUrl(mediaId, type, extension) {
-    return `${MULTIMEDIA_URL}/${type}/${mediaId.substring(0, 4)}/${mediaId}.${extension}`;
-  }
-
   onSuccess(response) {
-    this.mediaId = response.data.mediaId;
-    if (this.type === 'IMAGE') {
-      this.imageUrl = response.data.url;
-    }
+    this.media.mediaId = response.data.mediaId;
+    this.media.url = response.data.url;
     return response;
   }
 
@@ -44,9 +33,7 @@ export const UploadMultimedia = {
   template: require('./UploadMultimedia.html'),
   controller: UploadMultimediaController,
   bindings: {
-    extension: '@',
-    fileName: '@',
-    mediaId: '=',
+    media: '=',
     type: '@'
   }
 };

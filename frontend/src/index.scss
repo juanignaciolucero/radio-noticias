@@ -14,3 +14,13 @@
   height: 56px;
   width: 56px;
 }
+
+.alert-dismissable .close, .alert-dismissible .close {
+  top: -11px;
+  right: -5px;
+  color: inherit;
+}
+
+.alert {
+ margin: 15px;
+}

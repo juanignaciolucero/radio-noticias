@@ -1,12 +1,7 @@
-import MULTIMEDIA_URL from '../constants/Metadata';
-
 export class NewsService {
+  /** @ngInject */
   constructor(Restangular) {
     this.Restangular = Restangular;
-  }
-
-  getMultimediaUrl(mediaId, type) {
-    return `${MULTIMEDIA_URL}/${type}/${mediaId.substring(0, 4)}/${mediaId}`;
   }
 
   onSave(news) {
@@ -14,15 +9,17 @@ export class NewsService {
       title: news.title,
       description: news.description,
       radios: news.radios,
-      newsCategory: news.category,
-      audio: news.audio,
-      image: news.image,
+      newsCategory: news.newsCategory,
+      image: news.image.mediaId,
       user: {
         id: 1
       },
       featured: news.featured,
-      enabled: news.enabled
+      enabled: true
     };
+    if (news.audio && news.audio.mediaId) {
+      params.audio = news.audio.mediaId;
+    }
     let rest;
     if (news.id) {
       params.id = news.id;

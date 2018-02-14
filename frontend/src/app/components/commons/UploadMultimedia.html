@@ -1,10 +1,10 @@
 <div class="component">
   <div class="upload-widget">
-    <div style="background: url('{{$ctrl.imageUrl}}') no-repeat center center;" class="bg {{$ctrl.type}}-placeholder"></div>
+    <div style="background: url('{{$ctrl.media.url}}') no-repeat center center;" class="bg"></div>
     <div ng-if="!$ctrl.uploading" class="text-center select">
-      <div ng-if="$ctrl.type === 'AUDIO' && $ctrl.mediaId">
+      <div ng-if="$ctrl.media.type === 'AUDIO' && $ctrl.media.mediaId">
         <p>Audio actual:</p>
-        <p>{{$ctrl.fileName}}</p>
+        <p>{{$ctrl.media.name}}</p>
         <hr>
       </div>
 

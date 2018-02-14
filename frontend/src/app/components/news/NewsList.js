@@ -34,6 +34,6 @@ class NewsListController {
 
 export const NewsList = {
   template: require('./NewsList.html'),
-  controller: NewsListController
+  controller: ['Restangular', NewsListController]
 };
 

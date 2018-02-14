@@ -11,7 +11,6 @@
         <th>Radios</th>
         <th>Categoria</th>
         <th>Destacada</th>
-        <th>Activa</th>
         <th>Acciones</th>
         <tr ng-repeat="news in $ctrl.news">
           <td>
@@ -22,9 +21,8 @@
               {{radio.name}}
             </span>
           </td>
-          <td>{{news.newsCategory.id}}</td>
+          <td>{{news.newsCategory.name}}</td>
           <td>{{(news.featured)? 'Si' : 'No'}}</td>
-          <td>{{(news.enabled)? 'Si' : 'No'}}</td>
           <td>
             <a ui-sref="app.newsEdit({ id: {{news.id}} })"
                class="btn btn-default btn-xs btn-round">
