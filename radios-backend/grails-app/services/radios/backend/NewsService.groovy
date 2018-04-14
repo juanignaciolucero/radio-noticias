@@ -23,7 +23,7 @@ class NewsService {
             if (!command.showDisabled) {
                 eq("enabled", true)
             }
-            if (command.featured) {
+            if (command.featured != null) {
                 eq("featured", command.featured)
             }
             if (command.radio) {
