@@ -13,7 +13,7 @@ class NewsService {
         News news = new News(command.params())
         news.validate()
         if (!news.hasErrors()) {
-            news.save()
+            news.save(failOnError:true)
         }
         return news
     }

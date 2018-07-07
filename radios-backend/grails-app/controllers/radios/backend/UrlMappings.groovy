@@ -9,7 +9,7 @@ class UrlMappings {
             "/categories"(resources: "newsCategory")
             "/multimedia"(resources: "multimedia")
             "/ads"(resources: "ad")
-            "/scrap"(action: "scrap")
+            "/scrap"(controller: "Scraping", action: "scrap")
         }
 
         "500"(view: '/error')

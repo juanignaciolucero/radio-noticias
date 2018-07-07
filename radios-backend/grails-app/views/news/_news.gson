@@ -20,6 +20,7 @@ json {
     radios news.radios.collect { [id: it.id, name: it.name] }
     title news.title
     description news.description
+    rawDescription news.rawDescription
     featured news.featured
     enabled news.enabled
     newsCategory categoryParse

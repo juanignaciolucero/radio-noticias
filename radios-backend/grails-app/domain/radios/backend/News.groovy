@@ -3,6 +3,7 @@ package radios.backend
 class News {
     String title
     String description
+    String rawDescription
     Boolean featured
     Boolean enabled = true
     NewsCategory newsCategory
@@ -22,6 +23,7 @@ class News {
     static constraints = {
         title nullable: false, blank: false, maxSize: 255
         description nullable: false, blank: false
+        rawDescription nullable: true
         featured nullable: false
         enabled nullable: false
         newsCategory nullable: false
