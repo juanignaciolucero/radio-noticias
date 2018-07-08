@@ -16,7 +16,7 @@ class ScrapingService {
         articles.each { article ->
             def raw_web = Jsoup.connect(NEUQUEN_GOV + article.attr("href")).get()
             def raw_article = raw_web.select("#ja-current-content")
-            String raw = raw_article.toString().replaceAll('/images', NEUQUEN_GOV.substring(0,(NEUQUEN_GOV.length()-20)) +'/images')
+            String raw = raw_article.toString().replaceAll('/images', NEUQUEN_GOV.substring(0, (NEUQUEN_GOV.length() - 20)) + '/images')
             def a = newsService.save(
                 new SaveCommand([
                     title         : raw_article.select('.contentheading span').text(),
@@ -27,7 +27,12 @@ class ScrapingService {
                     user          : User.first(),
                     image         : Multimedia.first().mediaId
                 ]))
-            println(a.errors)
+        }
+        def doc2 = Jsoup.connect(NEUQUEN_MUNI.substring(0,NEUQUEN_MUNI.length() -1 )).userAgent("Mozilla/5.0").get()
+        def articles2 = doc2.select(".entry-title")
+        articles2.each { article ->
+            def raw_web = Jsoup.connect( article.select('a').attr("href")).get()
+            println(raw_web)
         }
 
     }
