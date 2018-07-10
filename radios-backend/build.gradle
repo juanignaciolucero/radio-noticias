@@ -70,6 +70,7 @@ dependencies {
     runtime 'mysql:mysql-connector-java:6.0.6'
     compile 'org.grails.plugins:aws-sdk-s3:2.1.11'
     compile 'org.jsoup:jsoup:1.11.3'
+    compile group: 'org.springframework', name: 'spring-mock', version: '2.0.8'
 }
 
 bootRun {

@@ -9,12 +9,9 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class NewsService {
 
-    News save(SaveCommand command) {
+    News save(SaveCommand command, Boolean failOnError = false) {
         News news = new News(command.params())
-        news.validate()
-        if (!news.hasErrors()) {
-            news.save(failOnError:true)
-        }
+        news.save(failOnError: failOnError)
         return news
     }
 

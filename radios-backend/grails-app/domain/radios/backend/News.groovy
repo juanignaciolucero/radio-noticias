@@ -18,6 +18,7 @@ class News {
     static mapping = {
         autoTimestamp: true
         description type: 'text'
+        rawDescription type: 'text'
     }
 
     static constraints = {
