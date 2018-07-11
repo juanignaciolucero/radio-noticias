@@ -3,6 +3,7 @@ package radios.backend
 import Command.news.SaveCommand
 import enums.MultimediaType
 import grails.gorm.transactions.Transactional
+import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -13,13 +14,14 @@ import utils.FileUtils
 @Transactional
 class ScrapingService {
     Map NEUQUEN_GOV = [
-            base: 'http://w2.neuquen.gov.ar',
-            feed: '/actualidad/noticias'
+        base: 'http://w2.neuquen.gov.ar',
+        feed: '/actualidad/noticias'
     ]
     Map NEUQUEN_MUNI = [
-            base: 'http://www.ciudaddeneuquen.gob.ar',
-            feed: '/prensa/'
+        base: 'http://www.ciudaddeneuquen.gob.ar',
+        feed: '/prensa/'
     ]
+
     NewsService newsService
     MultimediaService multimediaService
 
@@ -38,8 +40,9 @@ class ScrapingService {
     }
 
     def scrap() {
-        neuquenGov()
-        neuquenMunicipalidad()
+        minutoUnoRadio10()
+        /*neuquenGov()
+        neuquenMunicipalidad()*/
     }
 
     def neuquenGov() {
@@ -59,15 +62,15 @@ class ScrapingService {
 
                 // Obtiene la noticia completa
                 Document fullArticle = Jsoup.connect(
-                        NEUQUEN_GOV.base + NEUQUEN_GOV.feed + article.select("a.readon").attr("href")
+                    NEUQUEN_GOV.base + NEUQUEN_GOV.feed + article.select("a.readon").attr("href")
                 ).get()
 
                 // Seleccion del contenido de la noticia
                 Elements raw_article = fullArticle.select(".article-content")
 
                 String imageUrl = getImageUrl(
-                        NEUQUEN_GOV.base,
-                        raw_article.select('img')[0].attr("src")
+                    NEUQUEN_GOV.base,
+                    raw_article.select('img')[0].attr("src")
                 )
 
                 // elimina imagen y iconos innecesarios
@@ -77,15 +80,15 @@ class ScrapingService {
                 // Ajusta las url de imagenes y convierte la seleccion en String
                 String raw = raw_article.toString().replaceAll('/images', NEUQUEN_GOV.base + '/images')
                 newsService.save(
-                        new SaveCommand([
-                                title         : title,
-                                description   : description,
-                                rawDescription: raw,
-                                newsCategory  : category,
-                                radios        : Radio.all,
-                                user          : User.first(),
-                                image         : downloadUrlImage(imageUrl).mediaId
-                        ]), true)
+                    new SaveCommand([
+                        title         : title,
+                        description   : description,
+                        rawDescription: raw,
+                        newsCategory  : category,
+                        radios        : Radio.all,
+                        user          : User.first(),
+                        image         : downloadUrlImage(imageUrl).mediaId
+                    ]), true)
             }
         }
     }
@@ -95,8 +98,8 @@ class ScrapingService {
         File file = FileUtils.getFileFromUrl(imageUrl)
 
         Command.multimedia.SaveCommand multimediaCommand = new Command.multimedia.SaveCommand([
-                file: FileUtils.fileToMultipart(file), // Convierte el archivo en Multipart
-                type: MultimediaType.IMAGE
+            file: FileUtils.fileToMultipart(file), // Convierte el archivo en Multipart
+            type: MultimediaType.IMAGE
         ])
         Multimedia multimedia = multimediaService.save(multimediaCommand)
         file.delete() // Elimina archivo temporal
@@ -112,7 +115,7 @@ class ScrapingService {
                 NewsCategory category = NewsCategory.findOrCreateWhere([name: article.select('.entry-meta a')[2].text()])
                 // Obtiene la noticia completa
                 Document fullArticle = Jsoup.connect(
-                        article.select(".entry-title a").attr("href")
+                    article.select(".entry-title a").attr("href")
                 ).get()
 
                 Element description = article.select('p')[1]
@@ -138,16 +141,32 @@ class ScrapingService {
                 raw_article.select('.gap-30, .hr-thick, gap-20, .entry-title, .gap-10, .items-grid').remove()
 
                 newsService.save(
-                        new SaveCommand([
-                                title         : title,
-                                description   : description.text(),
-                                rawDescription: raw_article.toString(),
-                                newsCategory  : category,
-                                radios        : Radio.all,
-                                user          : User.first(),
-                                image         : downloadUrlImage(img.attr("src")).mediaId
-                        ]), true)
+                    new SaveCommand([
+                        title         : title,
+                        description   : description.text(),
+                        rawDescription: raw_article.toString(),
+                        newsCategory  : category,
+                        radios        : Radio.all,
+                        user          : User.first(),
+                        image         : downloadUrlImage(img.attr("src")).mediaId
+                    ]), true)
             }
         }
     }
+
+    def minutoUnoRadio10() {
+        def sitio = new URL("https://www.minutouno.com/radio10").getText()
+        Document doc = Jsoup.parse(sitio)
+        Elements articles = doc.select(".note").not(".radio-mobile")
+        articles.each { def article ->
+            String title = article.select(".title").text()
+            if (!News.findByTitle(title)) {
+                String description = article.select(".preview a").text()
+                def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
+                Document fullArticle = Jsoup.parse(fullArticleRaw)
+                def raw_article = fullArticle.select('main.container div.row')[0,1]
+            }
+        }
+    }
+
 }
