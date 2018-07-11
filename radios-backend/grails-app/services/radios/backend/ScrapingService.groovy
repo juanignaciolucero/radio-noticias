@@ -5,6 +5,7 @@ import enums.MultimediaType
 import grails.gorm.transactions.Transactional
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import utils.FileUtils
 
@@ -15,7 +16,10 @@ class ScrapingService {
             base: 'http://w2.neuquen.gov.ar',
             feed: '/actualidad/noticias'
     ]
-    final String NEUQUEN_MUNI = "http://www.ciudaddeneuquen.gob.ar/prensa/"
+    Map NEUQUEN_MUNI = [
+            base: 'http://www.ciudaddeneuquen.gob.ar',
+            feed: '/prensa/'
+    ]
     NewsService newsService
     MultimediaService multimediaService
 
@@ -35,6 +39,7 @@ class ScrapingService {
 
     def scrap() {
         neuquenGov()
+        neuquenMunicipalidad()
     }
 
     def neuquenGov() {
@@ -65,16 +70,6 @@ class ScrapingService {
                         raw_article.select('img')[0].attr("src")
                 )
 
-                // Descarga imagen de la noticia a un archivo temporal
-                File file = FileUtils.getFileFromUrl(imageUrl)
-
-                Command.multimedia.SaveCommand multimediaCommand = new Command.multimedia.SaveCommand([
-                        file: FileUtils.fileToMultipart(file), // Convierte el archivo en Multipart
-                        type: MultimediaType.IMAGE
-                ])
-                Multimedia multimedia = multimediaService.save(multimediaCommand)
-                file.delete() // Elimina archivo temporal
-
                 // elimina imagen y iconos innecesarios
                 raw_article.select('p img').remove()
                 raw_article.select('.article-toolswrap').remove()
@@ -89,32 +84,69 @@ class ScrapingService {
                                 newsCategory  : category,
                                 radios        : Radio.all,
                                 user          : User.first(),
-                                image         : multimedia.mediaId
+                                image         : downloadUrlImage(imageUrl).mediaId
                         ]), true)
             }
         }
+    }
 
+    private downloadUrlImage(String imageUrl) {
+        // Descarga imagen de la noticia a un archivo temporal
+        File file = FileUtils.getFileFromUrl(imageUrl)
+
+        Command.multimedia.SaveCommand multimediaCommand = new Command.multimedia.SaveCommand([
+                file: FileUtils.fileToMultipart(file), // Convierte el archivo en Multipart
+                type: MultimediaType.IMAGE
+        ])
+        Multimedia multimedia = multimediaService.save(multimediaCommand)
+        file.delete() // Elimina archivo temporal
+        return multimedia
     }
 
     def neuquenMunicipalidad() {
-        def doc2 = Jsoup.connect(NEUQUEN_MUNI).userAgent("Mozilla/5.0").get()
-        def articles2 = doc2.select(".entry-title")
-        articles2.each { article ->
-            def fullArticle = Jsoup.connect(article.select('a').attr("href")).get()
-            def raw_article = fullArticle.select('.post')
-            def title = raw_article.select('.entry-title').text()
-            if (News.findByTitle(title) == null) {
-                def a = newsService.save(
+        Document doc = Jsoup.connect(NEUQUEN_MUNI.base + NEUQUEN_MUNI.feed).userAgent("Mozilla/5.0").get()
+        Elements articles = doc.select("article.post")
+        articles.each { def article ->
+            String title = article.select('.entry-title').text()
+            if (!News.findByTitle(title)) {
+                NewsCategory category = NewsCategory.findOrCreateWhere([name: article.select('.entry-meta a')[2].text()])
+                // Obtiene la noticia completa
+                Document fullArticle = Jsoup.connect(
+                        article.select(".entry-title a").attr("href")
+                ).get()
+
+                Element description = article.select('p')[1]
+                Element img = article.selectFirst('img')
+                if (!img) {
+                    description = article.selectFirst('p')
+                    img = fullArticle.selectFirst('img')
+                }
+
+                // Seleccion del contenido de la noticia
+                Element raw_article = fullArticle.selectFirst("article")
+
+                // elimina imagen y secciones innecesarias
+                raw_article.select('.entry-title').remove()
+                raw_article.select('.hr-breadcrumbs').remove()
+                if (!raw_article.select('.wp-caption')) {
+                    raw_article.selectFirst('img').remove()
+                } else {
+                    raw_article.select('.wp-caption').remove()
+                }
+                raw_article.select('.sharedaddy').remove()
+                raw_article.select('.wf-table').remove()
+                raw_article.select('.gap-30, .hr-thick, gap-20, .entry-title, .gap-10, .items-grid').remove()
+
+                newsService.save(
                         new SaveCommand([
                                 title         : title,
-                                description   : raw_article.select('p').not(".wp-caption-text")[0].text(),
-                                rawDescription: raw_article.select('p').text(),
-                                newsCategory  : NewsCategory.findByName(raw_article.attr("class").substring(raw_article.attr("class").lastIndexOf("category-") + 9).replaceAll('-', ' ')),
-                                radios        : [Radio.first()],
+                                description   : description.text(),
+                                rawDescription: raw_article.toString(),
+                                newsCategory  : category,
+                                radios        : Radio.all,
                                 user          : User.first(),
-                                image         : Multimedia.first().mediaId
-                        ])
-                )
+                                image         : downloadUrlImage(img.attr("src")).mediaId
+                        ]), true)
             }
         }
     }
