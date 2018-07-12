@@ -41,8 +41,21 @@ class ScrapingService {
 
     def scrap() {
         minutoUnoRadio10()
-        /*neuquenGov()
-        neuquenMunicipalidad()*/
+        neuquenGov()
+        neuquenMunicipalidad()
+    }
+
+    private downloadUrlImage(String imageUrl) {
+        // Descarga imagen de la noticia a un archivo temporal
+        File file = FileUtils.getFileFromUrl(imageUrl)
+
+        Command.multimedia.SaveCommand multimediaCommand = new Command.multimedia.SaveCommand([
+                file: FileUtils.fileToMultipart(file), // Convierte el archivo en Multipart
+                type: MultimediaType.IMAGE
+        ])
+        Multimedia multimedia = multimediaService.save(multimediaCommand)
+        file.delete() // Elimina archivo temporal
+        return multimedia
     }
 
     def neuquenGov() {
@@ -93,24 +106,12 @@ class ScrapingService {
         }
     }
 
-    private downloadUrlImage(String imageUrl) {
-        // Descarga imagen de la noticia a un archivo temporal
-        File file = FileUtils.getFileFromUrl(imageUrl)
-
-        Command.multimedia.SaveCommand multimediaCommand = new Command.multimedia.SaveCommand([
-            file: FileUtils.fileToMultipart(file), // Convierte el archivo en Multipart
-            type: MultimediaType.IMAGE
-        ])
-        Multimedia multimedia = multimediaService.save(multimediaCommand)
-        file.delete() // Elimina archivo temporal
-        return multimedia
-    }
-
     def neuquenMunicipalidad() {
         Document doc = Jsoup.connect(NEUQUEN_MUNI.base + NEUQUEN_MUNI.feed).userAgent("Mozilla/5.0").get()
         Elements articles = doc.select("article.post")
         articles.each { def article ->
             String title = article.select('.entry-title').text()
+            println(title)
             if (!News.findByTitle(title)) {
                 NewsCategory category = NewsCategory.findOrCreateWhere([name: article.select('.entry-meta a')[2].text()])
                 // Obtiene la noticia completa
@@ -138,7 +139,7 @@ class ScrapingService {
                 }
                 raw_article.select('.sharedaddy').remove()
                 raw_article.select('.wf-table').remove()
-                raw_article.select('.gap-30, .hr-thick, gap-20, .entry-title, .gap-10, .items-grid').remove()
+                raw_article.select('.navigation-inner, .gap-30, .hr-thick, gap-20, .entry-title, .gap-10, .items-grid').remove()
 
                 newsService.save(
                     new SaveCommand([
@@ -149,7 +150,7 @@ class ScrapingService {
                         radios        : Radio.all,
                         user          : User.first(),
                         image         : downloadUrlImage(img.attr("src")).mediaId
-                    ]), true)
+                    ]), true, true)
             }
         }
     }
@@ -161,10 +162,25 @@ class ScrapingService {
         articles.each { def article ->
             String title = article.select(".title").text()
             if (!News.findByTitle(title)) {
+                NewsCategory category = NewsCategory.findOrCreateWhere(
+                        [name: article.selectFirst('.badge').attr('data-badge-caption')])
                 String description = article.select(".preview a").text()
                 def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
                 Document fullArticle = Jsoup.parse(fullArticleRaw)
-                def raw_article = fullArticle.select('main.container div.row')[0,1]
+                // def raw_article = fullArticle.select('main.container')
+                Elements raw_article = fullArticle.select('.detail-body')
+                raw_article.select('.visitimg').remove()
+
+                newsService.save(
+                        new SaveCommand([
+                                title         : title,
+                                description   : description,
+                                rawDescription: raw_article.toString(),
+                                newsCategory  : category,
+                                radios        : Radio.all,
+                                user          : User.first(),
+                                image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId
+                        ]), true, true)
             }
         }
     }
