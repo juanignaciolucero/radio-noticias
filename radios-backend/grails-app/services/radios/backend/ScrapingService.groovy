@@ -3,7 +3,6 @@ package radios.backend
 import Command.news.SaveCommand
 import enums.MultimediaType
 import grails.gorm.transactions.Transactional
-import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
