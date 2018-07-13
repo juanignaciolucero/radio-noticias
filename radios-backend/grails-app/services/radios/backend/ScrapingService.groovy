@@ -20,6 +20,10 @@ class ScrapingService {
             base: 'http://www.ciudaddeneuquen.gob.ar',
             feed: '/prensa/'
     ]
+    Map MINUTO_UNO_RADIO10 = [
+            base: 'https://www.minutouno.com',
+            feed: '/radio10'
+    ]
 
     NewsService newsService
     MultimediaService multimediaService
@@ -58,7 +62,7 @@ class ScrapingService {
     }
 
     def neuquenGov() {
-        Boolean featured = true
+        Boolean featured = !newsService.completedFeaturedNewsPerDay()
         Document doc = Jsoup.connect(NEUQUEN_GOV.base + NEUQUEN_GOV.feed).userAgent("Mozilla/5.0").get()
         Elements articles = doc.select(".contentpaneopen")
         // Estas noticias no tienen categoria, se crea una nueva con el nombre de la pagina
@@ -96,6 +100,7 @@ class ScrapingService {
                                 title         : title,
                                 description   : description,
                                 rawDescription: raw,
+                                source        : NEUQUEN_GOV.base,
                                 featured      : featured,
                                 newsCategory  : category,
                                 radios        : Radio.all,
@@ -108,7 +113,7 @@ class ScrapingService {
     }
 
     def neuquenMunicipalidad() {
-        Boolean featured = true
+        Boolean featured = !newsService.completedFeaturedNewsPerDay()
         Document doc = Jsoup.connect(NEUQUEN_MUNI.base + NEUQUEN_MUNI.feed).userAgent("Mozilla/5.0").get()
         Elements articles = doc.select("article.post")
         articles.each { def article ->
@@ -146,6 +151,7 @@ class ScrapingService {
                         new SaveCommand([
                                 title         : title,
                                 description   : description.text(),
+                                source        : NEUQUEN_MUNI.base,
                                 rawDescription: raw_article.toString(),
                                 newsCategory  : category,
                                 radios        : Radio.all,
@@ -159,8 +165,8 @@ class ScrapingService {
     }
 
     def minutoUnoRadio10() {
-        Boolean featured = true
-        def sitio = new URL("https://www.minutouno.com/radio10").getText()
+        Boolean featured = !newsService.completedFeaturedNewsPerDay()
+        def sitio = new URL(MINUTO_UNO_RADIO10.base + MINUTO_UNO_RADIO10.feed).getText()
         Document doc = Jsoup.parse(sitio)
         Elements articles = doc.select(".note").not(".radio-mobile")
         articles.each { def article ->
@@ -181,6 +187,7 @@ class ScrapingService {
                                 title         : title,
                                 description   : description,
                                 rawDescription: raw_article.toString(),
+                                source        : MINUTO_UNO_RADIO10.base,
                                 newsCategory  : category,
                                 radios        : Radio.all,
                                 featured      : featured,

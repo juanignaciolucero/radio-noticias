@@ -5,6 +5,7 @@ class News {
     String description
     String rawDescription
     Boolean featured
+    String source
     Boolean enabled = true
     NewsCategory newsCategory
     User user
@@ -32,5 +33,6 @@ class News {
         radios minSize: 1, nullable: false
         audio nullable: true
         image nullable: false
+        source nullable: true
     }
 }

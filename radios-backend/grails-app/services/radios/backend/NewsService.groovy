@@ -46,4 +46,11 @@ class NewsService {
         }
         return news
     }
+
+    Boolean completedFeaturedNewsPerDay() {
+        return News.createCriteria().list(max: 5) {
+            eq("featured", true)
+            ge("dateCreated", new Date().clearTime())
+        }.size() == 5
+    }
 }
