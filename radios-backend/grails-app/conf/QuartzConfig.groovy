@@ -1,2 +1,4 @@
-class QuartzConfig {
+quartz {
+    autoStartup = true
 }
+

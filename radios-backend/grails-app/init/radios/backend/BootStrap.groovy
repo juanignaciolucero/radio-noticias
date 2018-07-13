@@ -2,8 +2,9 @@ package radios.backend
 
 import grails.core.GrailsApplication
 import grails.plugin.awssdk.s3.AmazonS3Service
-
+import radios.backend.ScrapingJob
 class BootStrap {
+
     AmazonS3Service amazonS3Service
     GrailsApplication grailsApplication
     def init = { servletContext ->
@@ -23,6 +24,7 @@ class BootStrap {
         Radio.findOrCreateByName("VALENOVENTAICIETESINCO").save()
         NewsCategory.findOrCreateByName("Otros").save()
         amazonS3Service.createBucket(grailsApplication.config.getProperty('aws.s3.bucket.name'))
+        ScrapingJob.triggerNow()
     }
     def destroy = {
     }
