@@ -28,6 +28,7 @@ class NewsService {
                     eq("id", command.radio.id)
                 }
             }
+            order('dateCreated', 'desc')
         }
     }
 
