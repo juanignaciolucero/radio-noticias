@@ -9,12 +9,9 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class NewsService {
 
-    News save(SaveCommand command) {
+    News save(SaveCommand command, Boolean failOnError = false, Boolean flush = false) {
         News news = new News(command.params())
-        news.validate()
-        if (!news.hasErrors()) {
-            news.save()
-        }
+        news.save(failOnError: failOnError, flush: flush)
         return news
     }
 
@@ -31,6 +28,7 @@ class NewsService {
                     eq("id", command.radio.id)
                 }
             }
+            order('dateCreated', 'desc')
         }
     }
 
@@ -47,5 +45,12 @@ class NewsService {
             news.save()
         }
         return news
+    }
+
+    Boolean completedFeaturedNewsPerDay() {
+        return News.createCriteria().list(max: 5) {
+            eq("featured", true)
+            ge("dateCreated", new Date().clearTime())
+        }.size() == 5
     }
 }

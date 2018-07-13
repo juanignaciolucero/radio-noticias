@@ -1,0 +1,21 @@
+branch-defaults:
+  default:
+    environment: radiosAsia-env
+deploy:
+  artifact: /home/john/proyectos/radio-noticias/radios-backend/build/libs/radios-backend-0.1.war
+environment-defaults:
+  radiosAsia-env:
+    branch: null
+    repository: null
+global:
+  application_name: radios-asia
+  default_ec2_keyname: aws-eb
+  default_platform: Tomcat 8 with Java 8 running on 64bit Amazon Linux
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  sc: null
+  workspace_type: Application
