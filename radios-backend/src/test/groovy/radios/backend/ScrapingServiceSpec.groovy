@@ -6,6 +6,7 @@ import spock.lang.Specification
 class ScrapingServiceSpec extends Specification implements ServiceUnitTest<ScrapingService>{
 
     def setup() {
+
     }
 
     def cleanup() {

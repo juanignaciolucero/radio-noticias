@@ -1,6 +1,7 @@
 package radios.backend
 
 import Command.news.SaveCommand
+import Command.news.UpdateCommand
 import enums.MultimediaType
 import grails.gorm.transactions.Transactional
 import org.jsoup.Jsoup
@@ -164,6 +165,30 @@ class ScrapingService {
         }
     }
 
+    Map minutounoRadio10news(Element article, Boolean featured) {
+        String title = article.select(".title").text()
+        String imageUrl = article.select("figure img").attr("src")
+        NewsCategory category = NewsCategory.findOrCreateWhere(
+            [name: article.selectFirst('.badge').attr('data-badge-caption')])
+        String description = article.select(".preview a").text()
+        def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
+        Document fullArticle = Jsoup.parse(fullArticleRaw)
+        // def raw_article = fullArticle.select('main.container')
+        Elements raw_article = fullArticle.select('.detail-body')
+        raw_article.select('.visitimg').remove()
+        raw_article.select('.embed_options').remove()
+        return [title         : title,
+                description   : description,
+                rawDescription: raw_article.toString(),
+                source        : MINUTO_UNO_RADIO10.base,
+                newsCategory  : category,
+                radios        : Radio.all,
+                featured      : featured,
+                user          : User.first(),
+                imageUrl      : imageUrl,
+                image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId]
+    }
+
     def minutoUnoRadio10() {
         Boolean featured = !newsService.completedFeaturedNewsPerDay()
         def sitio = new URL(MINUTO_UNO_RADIO10.base + MINUTO_UNO_RADIO10.feed).getText()
@@ -172,33 +197,18 @@ class ScrapingService {
         articles.each { def article ->
             String title = article.select(".title").text()
             String imageUrl = article.select("figure img").attr("src")
-            if (!News.findByTitle(title) && !News.findByImageUrl(imageUrl)) {
-                NewsCategory category = NewsCategory.findOrCreateWhere(
-                    [name: article.selectFirst('.badge').attr('data-badge-caption')])
-                String description = article.select(".preview a").text()
-                def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
-                Document fullArticle = Jsoup.parse(fullArticleRaw)
-                // def raw_article = fullArticle.select('main.container')
-                Elements raw_article = fullArticle.select('.detail-body')
-                raw_article.select('.visitimg').remove()
-                raw_article.select('.embed_options').remove()
-
+            News news = News.findByImageUrl(imageUrl)
+            if (!news) {
                 newsService.save(
-                    new SaveCommand([
-                        title         : title,
-                        description   : description,
-                        rawDescription: raw_article.toString(),
-                        source        : MINUTO_UNO_RADIO10.base,
-                        newsCategory  : category,
-                        radios        : Radio.all,
-                        featured      : featured,
-                        user          : User.first(),
-                        imageUrl      : imageUrl,
-                        image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId
-                    ]), true, true)
+                    new SaveCommand(minutounoRadio10news(article, featured)), true, true)
                 featured = (featured) ? false : featured
+            } else if (news.getTitle() != title) {
+                newsService.update(
+                    new UpdateCommand(minutounoRadio10news(article, news.getFeatured())
+                    )
+                )
             }
         }
     }
-
 }
+
