@@ -14,23 +14,25 @@ class NewsHolder implements grails.validation.Validateable {
     Boolean enabled = true
     String audio
     String image
+    String imageUrl
     List<Radio> radios
     NewsCategory newsCategory
     User user
 
     Map params() {
         return [
-                title         : title,
-                description   : description,
-                source        : source,
-                rawDescription: rawDescription,
-                featured      : featured,
-                enabled       : enabled,
-                newsCategory  : newsCategory,
-                radios        : radios,
-                user          : user,
-                audio         : Multimedia.findByMediaId(audio),
-                image         : Multimedia.findByMediaId(image)
+            title         : title,
+            description   : description,
+            source        : source,
+            rawDescription: rawDescription,
+            featured      : featured,
+            enabled       : enabled,
+            newsCategory  : newsCategory,
+            radios        : radios,
+            user          : user,
+            audio         : Multimedia.findByMediaId(audio),
+            image         : Multimedia.findByMediaId(image),
+            imageUrl      : imageUrl
         ]
     }
 }
