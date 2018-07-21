@@ -4,4 +4,9 @@ model {
 	NewsCategory newsCategory
 }
 
-json g.render(newsCategory, [resolveTemplate: false])
+json {
+	id newsCategory.id
+	name newsCategory.name
+	backgroundColor newsCategory.backgroundColor
+	textColor newsCategory.textColor
+}

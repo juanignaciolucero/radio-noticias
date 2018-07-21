@@ -61,12 +61,32 @@ class ScrapingService {
         return multimedia
     }
 
+    private findOrCreateCategory(String name, String bg, String text) {
+        NewsCategory category = NewsCategory.findByName(name)
+        if (!category) {
+            category = new NewsCategory()
+            category.name = name
+            category.backgroundColor = bg
+            category.textColor = text
+            category.save()
+        }
+        return category
+    }
+
     def neuquenGov() {
         Boolean featured = !newsService.completedFeaturedNewsPerDay()
         Document doc = Jsoup.connect(NEUQUEN_GOV.base + NEUQUEN_GOV.feed).userAgent("Mozilla/5.0").get()
         Elements articles = doc.select(".contentpaneopen")
         // Estas noticias no tienen categoria, se crea una nueva con el nombre de la pagina
-        NewsCategory category = NewsCategory.findOrCreateWhere([name: 'Neuquén Provincia'])
+        NewsCategory category = NewsCategory.findByName('Neuquén Provincia')
+        if (!category) {
+            category = new NewsCategory()
+            category.name = 'Neuquén Provincia'
+            category.backgroundColor = "#f0d040"
+            category.textColor = "#00000"
+            category.save()
+        }
+
         articles.each { def article ->
             String title = article.select('.contentheading').text()
             if (!News.findByTitle(title)) {
@@ -119,7 +139,11 @@ class ScrapingService {
         articles.each { def article ->
             String title = article.select('.entry-title').text()
             if (!News.findByTitle(title)) {
-                NewsCategory category = NewsCategory.findOrCreateWhere([name: article.select('.entry-meta a')[2].text()])
+                NewsCategory category = findOrCreateCategory(
+                        article.select('.entry-meta a')[2].text(),
+                        '#1D3477',
+                        '#ffffff')
+
                 // Obtiene la noticia completa
                 Document fullArticle = Jsoup.connect(
                         article.select(".entry-title a").attr("href")
@@ -172,8 +196,11 @@ class ScrapingService {
         articles.each { def article ->
             String title = article.select(".title").text()
             if (!News.findByTitle(title)) {
-                NewsCategory category = NewsCategory.findOrCreateWhere(
-                        [name: article.selectFirst('.badge').attr('data-badge-caption')])
+                NewsCategory category = findOrCreateCategory(
+                        article.selectFirst('.badge').attr('data-badge-caption'),
+                        '#2f3034',
+                        '#ffffff')
+
                 String description = article.select(".preview a").text()
                 def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
                 Document fullArticle = Jsoup.parse(fullArticleRaw)

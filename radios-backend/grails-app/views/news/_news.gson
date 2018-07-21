@@ -12,7 +12,9 @@ def userParse = [
 
 def categoryParse = [
     id: news.newsCategory.id,
-    name: news.newsCategory.name
+    name: news.newsCategory.name,
+    backgroundColor: (news.newsCategory.backgroundColor) ? news.newsCategory.backgroundColor : '#ffffff',
+    textColor: (news.newsCategory.textColor) ? news.newsCategory.textColor : '#000000'
 ]
 
 json {
