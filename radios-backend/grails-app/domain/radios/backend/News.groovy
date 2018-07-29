@@ -1,5 +1,7 @@
 package radios.backend
 
+import enums.Scraping
+
 class News {
     String title
     String description
@@ -13,6 +15,7 @@ class News {
     Multimedia image
     Date dateCreated
     Date lastUpdated
+    String scraping
 
     static hasMany = [radios: Radio]
 
@@ -34,5 +37,6 @@ class News {
         audio nullable: true
         image nullable: false
         source nullable: true
+        scraping nullable: true
     }
 }

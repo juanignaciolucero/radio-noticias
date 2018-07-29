@@ -14,6 +14,7 @@ class NewsHolder implements grails.validation.Validateable {
     Boolean enabled = true
     String audio
     String image
+    String scraping
     List<Radio> radios
     NewsCategory newsCategory
     User user
@@ -30,7 +31,8 @@ class NewsHolder implements grails.validation.Validateable {
                 radios        : radios,
                 user          : user,
                 audio         : Multimedia.findByMediaId(audio),
-                image         : Multimedia.findByMediaId(image)
+                image         : Multimedia.findByMediaId(image),
+                scraping: scraping
         ]
     }
 }

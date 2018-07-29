@@ -1,3 +1,4 @@
+import enums.Scraping
 import radios.backend.News
 
 model {
@@ -10,11 +11,29 @@ def userParse = [
     lastName: news.user.lastName,
 ]
 
+String backgroundColor
+String textColor
+
+switch (news.source) {
+    case Scraping.NEUQUEN_MUNI.base:
+        backgroundColor = Scraping.NEUQUEN_MUNI.background
+        textColor = Scraping.NEUQUEN_MUNI.font
+        break
+    case Scraping.NEUQUEN_GOV.base:
+        backgroundColor = Scraping.NEUQUEN_GOV.background
+        textColor = Scraping.NEUQUEN_GOV.font
+        break
+    case Scraping.MINUTO_UNO_RADIO10.base:
+        backgroundColor = Scraping.MINUTO_UNO_RADIO10.background
+        textColor = Scraping.MINUTO_UNO_RADIO10.font
+        break
+}
+
 def categoryParse = [
     id: news.newsCategory.id,
     name: news.newsCategory.name,
-    backgroundColor: (news.newsCategory.backgroundColor) ? news.newsCategory.backgroundColor : '#ffffff',
-    textColor: (news.newsCategory.textColor) ? news.newsCategory.textColor : '#000000'
+    backgroundColor: backgroundColor,
+    textColor: textColor
 ]
 
 json {

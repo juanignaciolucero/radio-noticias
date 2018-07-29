@@ -2,6 +2,7 @@ package radios.backend
 
 import Command.news.SaveCommand
 import enums.MultimediaType
+import enums.Scraping
 import grails.gorm.transactions.Transactional
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -12,19 +13,6 @@ import utils.FileUtils
 
 @Transactional
 class ScrapingService {
-    Map NEUQUEN_GOV = [
-            base: 'http://w2.neuquen.gov.ar',
-            feed: '/actualidad/noticias'
-    ]
-    Map NEUQUEN_MUNI = [
-            base: 'http://www.ciudaddeneuquen.gob.ar',
-            feed: '/prensa/'
-    ]
-    Map MINUTO_UNO_RADIO10 = [
-            base: 'https://www.minutouno.com',
-            feed: '/radio10'
-    ]
-
     NewsService newsService
     MultimediaService multimediaService
 
@@ -75,15 +63,15 @@ class ScrapingService {
 
     def neuquenGov() {
         Boolean featured = !newsService.completedFeaturedNewsPerDay()
-        Document doc = Jsoup.connect(NEUQUEN_GOV.base + NEUQUEN_GOV.feed).userAgent("Mozilla/5.0").get()
+        Document doc = Jsoup.connect(Scraping.NEUQUEN_GOV.base + Scraping.NEUQUEN_GOV.feed).userAgent("Mozilla/5.0").get()
         Elements articles = doc.select(".contentpaneopen")
         // Estas noticias no tienen categoria, se crea una nueva con el nombre de la pagina
         NewsCategory category = NewsCategory.findByName('Neuquén Provincia')
         if (!category) {
             category = new NewsCategory()
             category.name = 'Neuquén Provincia'
-            category.backgroundColor = "#f0d040"
-            category.textColor = "#00000"
+            category.backgroundColor = Scraping.NEUQUEN_GOV.background
+            category.textColor = Scraping.NEUQUEN_GOV.font
             category.save()
         }
 
@@ -98,14 +86,14 @@ class ScrapingService {
 
                 // Obtiene la noticia completa
                 Document fullArticle = Jsoup.connect(
-                        NEUQUEN_GOV.base + NEUQUEN_GOV.feed + article.select("a.readon").attr("href")
+                        Scraping.NEUQUEN_GOV.base + Scraping.NEUQUEN_GOV.feed + article.select("a.readon").attr("href")
                 ).get()
 
                 // Seleccion del contenido de la noticia
                 Elements raw_article = fullArticle.select(".article-content")
 
                 String imageUrl = getImageUrl(
-                        NEUQUEN_GOV.base,
+                        Scraping.NEUQUEN_GOV.base,
                         raw_article.select('img')[0].attr("src")
                 )
 
@@ -114,18 +102,19 @@ class ScrapingService {
                 raw_article.select('.article-toolswrap').remove()
 
                 // Ajusta las url de imagenes y convierte la seleccion en String
-                String raw = raw_article.toString().replaceAll('/images', NEUQUEN_GOV.base + '/images')
+                String raw = raw_article.toString().replaceAll('/images', Scraping.NEUQUEN_GOV.base + '/images')
                 newsService.save(
                         new SaveCommand([
                                 title         : title,
                                 description   : description,
                                 rawDescription: raw,
-                                source        : NEUQUEN_GOV.base,
+                                source        : Scraping.NEUQUEN_GOV.base,
                                 featured      : featured,
                                 newsCategory  : category,
                                 radios        : Radio.all,
                                 user          : User.first(),
-                                image         : downloadUrlImage(imageUrl).mediaId
+                                image         : downloadUrlImage(imageUrl).mediaId,
+                                scraping: Scraping.NEUQUEN_GOV.toString()
                         ]), true, true)
                 featured = (featured) ? false : featured
             }
@@ -134,7 +123,7 @@ class ScrapingService {
 
     def neuquenMunicipalidad() {
         Boolean featured = !newsService.completedFeaturedNewsPerDay()
-        Document doc = Jsoup.connect(NEUQUEN_MUNI.base + NEUQUEN_MUNI.feed).userAgent("Mozilla/5.0").get()
+        Document doc = Jsoup.connect(Scraping.NEUQUEN_MUNI.base + Scraping.NEUQUEN_MUNI.feed).userAgent("Mozilla/5.0").get()
         Elements articles = doc.select("article.post")
         articles.each { def article ->
             String title = article.select('.entry-title').text()
@@ -175,13 +164,14 @@ class ScrapingService {
                         new SaveCommand([
                                 title         : title,
                                 description   : description.text(),
-                                source        : NEUQUEN_MUNI.base,
+                                source        : Scraping.NEUQUEN_MUNI.base,
                                 rawDescription: raw_article.toString(),
                                 newsCategory  : category,
                                 radios        : Radio.all,
                                 featured      : featured,
                                 user          : User.first(),
-                                image         : downloadUrlImage(img.attr("src")).mediaId
+                                image         : downloadUrlImage(img.attr("src")).mediaId,
+                                scraping: Scraping.NEUQUEN_MUNI.toString()
                         ]), true, true)
                 featured = (featured) ? false : featured
             }
@@ -190,7 +180,7 @@ class ScrapingService {
 
     def minutoUnoRadio10() {
         Boolean featured = !newsService.completedFeaturedNewsPerDay()
-        def sitio = new URL(MINUTO_UNO_RADIO10.base + MINUTO_UNO_RADIO10.feed).getText()
+        def sitio = new URL(Scraping.MINUTO_UNO_RADIO10.base + Scraping.MINUTO_UNO_RADIO10.feed).getText()
         Document doc = Jsoup.parse(sitio)
         Elements articles = doc.select(".note").not(".radio-mobile")
         articles.each { def article ->
@@ -214,16 +204,16 @@ class ScrapingService {
                                 title         : title,
                                 description   : description,
                                 rawDescription: raw_article.toString(),
-                                source        : MINUTO_UNO_RADIO10.base,
+                                source        : Scraping.MINUTO_UNO_RADIO10.base,
                                 newsCategory  : category,
                                 radios        : Radio.all,
                                 featured      : featured,
                                 user          : User.first(),
-                                image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId
+                                image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId,
+                                scraping: Scraping.MINUTO_UNO_RADIO10.toString()
                         ]), true, true)
                 featured = (featured) ? false : featured
             }
         }
     }
-
 }
