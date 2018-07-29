@@ -15,6 +15,7 @@ class NewsHolder implements grails.validation.Validateable {
     String audio
     String image
     String scraping
+    String imageUrl
     List<Radio> radios
     NewsCategory newsCategory
     User user
@@ -32,7 +33,8 @@ class NewsHolder implements grails.validation.Validateable {
                 user          : user,
                 audio         : Multimedia.findByMediaId(audio),
                 image         : Multimedia.findByMediaId(image),
-                scraping: scraping
+                imageUrl      : imageUrl,
+                scraping      : scraping
         ]
     }
 }

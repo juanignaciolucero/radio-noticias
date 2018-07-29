@@ -1,9 +1,8 @@
 package radios.backend
 
-import enums.Scraping
-
 class News {
     String title
+    String imageUrl
     String description
     String rawDescription
     Boolean featured
@@ -27,6 +26,7 @@ class News {
 
     static constraints = {
         title nullable: false, blank: false, maxSize: 255
+        imageUrl nullable: true
         description nullable: false, blank: false
         rawDescription nullable: true
         featured nullable: false

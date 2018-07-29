@@ -1,6 +1,7 @@
 package radios.backend
 
 import Command.news.SaveCommand
+import Command.news.UpdateCommand
 import enums.MultimediaType
 import enums.Scraping
 import grails.gorm.transactions.Transactional
@@ -114,7 +115,7 @@ class ScrapingService {
                                 radios        : Radio.all,
                                 user          : User.first(),
                                 image         : downloadUrlImage(imageUrl).mediaId,
-                                scraping: Scraping.NEUQUEN_GOV.toString()
+                                scraping      : Scraping.NEUQUEN_GOV.toString()
                         ]), true, true)
                 featured = (featured) ? false : featured
             }
@@ -171,11 +172,38 @@ class ScrapingService {
                                 featured      : featured,
                                 user          : User.first(),
                                 image         : downloadUrlImage(img.attr("src")).mediaId,
-                                scraping: Scraping.NEUQUEN_MUNI.toString()
+                                scraping      : Scraping.NEUQUEN_MUNI.toString()
                         ]), true, true)
                 featured = (featured) ? false : featured
             }
         }
+    }
+
+    Map minutounoRadio10news(Element article, Boolean featured) {
+        String title = article.select(".title").text()
+        String imageUrl = article.select("figure img").attr("src")
+        NewsCategory category = NewsCategory.findOrCreateWhere(
+                [name: article.selectFirst('.badge').attr('data-badge-caption')])
+        String description = article.select(".preview a").text()
+        def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
+        Document fullArticle = Jsoup.parse(fullArticleRaw)
+        // def raw_article = fullArticle.select('main.container')
+        Elements raw_article = fullArticle.select('.detail-body')
+        raw_article.select('.visitimg').remove()
+        raw_article.select('.embed_options').remove()
+        return [
+                title         : title,
+                description   : description,
+                rawDescription: raw_article.toString(),
+                source        : Scraping.MINUTO_UNO_RADIO10.base,
+                newsCategory  : category,
+                radios        : Radio.all,
+                featured      : featured,
+                user          : User.first(),
+                imageUrl      : imageUrl,
+                image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId,
+                scraping      : Scraping.MINUTO_UNO_RADIO10.toString()
+        ]
     }
 
     def minutoUnoRadio10() {
@@ -184,35 +212,17 @@ class ScrapingService {
         Document doc = Jsoup.parse(sitio)
         Elements articles = doc.select(".note").not(".radio-mobile")
         articles.each { def article ->
-            String title = article.select(".title").text()
-            if (!News.findByTitle(title)) {
-                NewsCategory category = findOrCreateCategory(
-                        article.selectFirst('.badge').attr('data-badge-caption'),
-                        '#2f3034',
-                        '#ffffff')
-
-                String description = article.select(".preview a").text()
-                def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
-                Document fullArticle = Jsoup.parse(fullArticleRaw)
-                // def raw_article = fullArticle.select('main.container')
-                Elements raw_article = fullArticle.select('.detail-body')
-                raw_article.select('.visitimg').remove()
-                raw_article.select('.embed_options').remove()
-
+            String title = article.select(".title").text().trim()
+            String imageUrl = article.select("figure img").attr("src")
+            News news = News.findByImageUrl(imageUrl)
+            if (!news) {
                 newsService.save(
-                        new SaveCommand([
-                                title         : title,
-                                description   : description,
-                                rawDescription: raw_article.toString(),
-                                source        : Scraping.MINUTO_UNO_RADIO10.base,
-                                newsCategory  : category,
-                                radios        : Radio.all,
-                                featured      : featured,
-                                user          : User.first(),
-                                image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId,
-                                scraping: Scraping.MINUTO_UNO_RADIO10.toString()
-                        ]), true, true)
+                        new SaveCommand(minutounoRadio10news(article, featured)), true, true)
                 featured = (featured) ? false : featured
+            } else if (news.getTitle() != title) {
+                UpdateCommand command = new UpdateCommand(minutounoRadio10news(article, news.featured))
+                command.id = news.id
+                newsService.update(command)
             }
         }
     }
