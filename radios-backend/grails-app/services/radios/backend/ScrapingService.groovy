@@ -42,8 +42,8 @@ class ScrapingService {
         File file = FileUtils.getFileFromUrl(imageUrl)
 
         Command.multimedia.SaveCommand multimediaCommand = new Command.multimedia.SaveCommand([
-                file: FileUtils.fileToMultipart(file), // Convierte el archivo en Multipart
-                type: MultimediaType.IMAGE
+            file: FileUtils.fileToMultipart(file), // Convierte el archivo en Multipart
+            type: MultimediaType.IMAGE
         ])
         Multimedia multimedia = multimediaService.save(multimediaCommand)
         file.delete() // Elimina archivo temporal
@@ -84,19 +84,21 @@ class ScrapingService {
                 if (!description) {
                     description = article.select('.article-content p')[1].text()
                 }
-
+                String imageUrl = Scraping.NEUQUEN_GOV.base + article.select('.article-content img').attr('src')
                 // Obtiene la noticia completa
                 Document fullArticle = Jsoup.connect(
-                        Scraping.NEUQUEN_GOV.base + Scraping.NEUQUEN_GOV.feed + article.select("a.readon").attr("href")
+                    Scraping.NEUQUEN_GOV.base + article.select("a.readon").attr("href")
                 ).get()
 
                 // Seleccion del contenido de la noticia
                 Elements raw_article = fullArticle.select(".article-content")
 
-                String imageUrl = getImageUrl(
+                if (raw_article.select('img')) {
+                    imageUrl = getImageUrl(
                         Scraping.NEUQUEN_GOV.base,
                         raw_article.select('img')[0].attr("src")
-                )
+                    )
+                }
 
                 // elimina imagen y iconos innecesarios
                 raw_article.select('p img').remove()
@@ -105,18 +107,18 @@ class ScrapingService {
                 // Ajusta las url de imagenes y convierte la seleccion en String
                 String raw = raw_article.toString().replaceAll('/images', Scraping.NEUQUEN_GOV.base + '/images')
                 newsService.save(
-                        new SaveCommand([
-                                title         : title,
-                                description   : description,
-                                rawDescription: raw,
-                                source        : Scraping.NEUQUEN_GOV.base,
-                                featured      : featured,
-                                newsCategory  : category,
-                                radios        : Radio.all,
-                                user          : User.first(),
-                                image         : downloadUrlImage(imageUrl).mediaId,
-                                scraping      : Scraping.NEUQUEN_GOV.toString()
-                        ]), true, true)
+                    new SaveCommand([
+                        title         : title,
+                        description   : description,
+                        rawDescription: raw,
+                        source        : Scraping.NEUQUEN_GOV.base,
+                        featured      : featured,
+                        newsCategory  : category,
+                        radios        : Radio.all,
+                        user          : User.first(),
+                        image         : downloadUrlImage(imageUrl).mediaId,
+                        scraping      : Scraping.NEUQUEN_GOV.toString()
+                    ]), true, true)
                 featured = (featured) ? false : featured
             }
         }
@@ -130,13 +132,13 @@ class ScrapingService {
             String title = article.select('.entry-title').text()
             if (!News.findByTitle(title)) {
                 NewsCategory category = findOrCreateCategory(
-                        article.select('.entry-meta a')[2].text(),
-                        '#1D3477',
-                        '#ffffff')
+                    article.select('.entry-meta a')[2].text(),
+                    '#1D3477',
+                    '#ffffff')
 
                 // Obtiene la noticia completa
                 Document fullArticle = Jsoup.connect(
-                        article.select(".entry-title a").attr("href")
+                    article.select(".entry-title a").attr("href")
                 ).get()
 
                 Element description = article.select('p')[1]
@@ -162,18 +164,18 @@ class ScrapingService {
                 raw_article.select('.navigation-inner, .gap-30, .hr-thick, gap-20, .entry-title, .gap-10, .items-grid').remove()
 
                 newsService.save(
-                        new SaveCommand([
-                                title         : title,
-                                description   : description.text(),
-                                source        : Scraping.NEUQUEN_MUNI.base,
-                                rawDescription: raw_article.toString(),
-                                newsCategory  : category,
-                                radios        : Radio.all,
-                                featured      : featured,
-                                user          : User.first(),
-                                image         : downloadUrlImage(img.attr("src")).mediaId,
-                                scraping      : Scraping.NEUQUEN_MUNI.toString()
-                        ]), true, true)
+                    new SaveCommand([
+                        title         : title,
+                        description   : description.text(),
+                        source        : Scraping.NEUQUEN_MUNI.base,
+                        rawDescription: raw_article.toString(),
+                        newsCategory  : category,
+                        radios        : Radio.all,
+                        featured      : featured,
+                        user          : User.first(),
+                        image         : downloadUrlImage(img.attr("src")).mediaId,
+                        scraping      : Scraping.NEUQUEN_MUNI.toString()
+                    ]), true, true)
                 featured = (featured) ? false : featured
             }
         }
@@ -183,7 +185,7 @@ class ScrapingService {
         String title = article.select(".title").text()
         String imageUrl = article.select("figure img").attr("src")
         NewsCategory category = NewsCategory.findOrCreateWhere(
-                [name: article.selectFirst('.badge').attr('data-badge-caption')])
+            [name: article.selectFirst('.badge').attr('data-badge-caption')])
         String description = article.select(".preview a").text()
         def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
         Document fullArticle = Jsoup.parse(fullArticleRaw)
@@ -192,17 +194,17 @@ class ScrapingService {
         raw_article.select('.visitimg').remove()
         raw_article.select('.embed_options').remove()
         return [
-                title         : title,
-                description   : description,
-                rawDescription: raw_article.toString(),
-                source        : Scraping.MINUTO_UNO_RADIO10.base,
-                newsCategory  : category,
-                radios        : Radio.all,
-                featured      : featured,
-                user          : User.first(),
-                imageUrl      : imageUrl,
-                image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId,
-                scraping      : Scraping.MINUTO_UNO_RADIO10.toString()
+            title         : title,
+            description   : description,
+            rawDescription: raw_article.toString(),
+            source        : Scraping.MINUTO_UNO_RADIO10.base,
+            newsCategory  : category,
+            radios        : Radio.all,
+            featured      : featured,
+            user          : User.first(),
+            imageUrl      : imageUrl,
+            image         : downloadUrlImage(fullArticle.select('.media-wrapper img').attr("src")).mediaId,
+            scraping      : Scraping.MINUTO_UNO_RADIO10.toString()
         ]
     }
 
@@ -217,7 +219,7 @@ class ScrapingService {
             News news = News.findByImageUrl(imageUrl)
             if (!news) {
                 newsService.save(
-                        new SaveCommand(minutounoRadio10news(article, featured)), true, true)
+                    new SaveCommand(minutounoRadio10news(article, featured)), true, true)
                 featured = (featured) ? false : featured
             } else if (news.getTitle() != title) {
                 UpdateCommand command = new UpdateCommand(minutounoRadio10news(article, news.featured))
