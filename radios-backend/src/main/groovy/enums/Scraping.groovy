@@ -4,14 +4,14 @@ enum Scraping {
     NEUQUEN_GOV(
             'http://w2.neuquen.gov.ar',
             '/actualidad/noticias',
-            '#f0d040',
-            '#00000'
+            '#1D3477',
+            '#ffffff'
     ),
     NEUQUEN_MUNI(
             'http://www.ciudaddeneuquen.gob.ar',
             '/prensa/',
-            '#1D3477',
-            '#ffffff'
+            '#f0d040',
+            '#00000'
     ),
     MINUTO_UNO_RADIO10(
             'https://www.minutouno.com',
