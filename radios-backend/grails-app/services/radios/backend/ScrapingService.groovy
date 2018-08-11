@@ -32,9 +32,9 @@ class ScrapingService {
     }
 
     def scrap() {
-        minutoUnoRadio10()
-        neuquenGov()
-        neuquenMunicipalidad()
+
+
+
     }
 
     private downloadUrlImage(String imageUrl) {

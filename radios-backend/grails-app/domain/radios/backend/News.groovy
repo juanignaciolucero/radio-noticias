@@ -27,7 +27,7 @@ class News {
     static constraints = {
         title nullable: false, blank: false, maxSize: 255
         imageUrl nullable: true
-        description nullable: false, blank: false
+        description nullable: true, blank: false
         rawDescription nullable: true
         featured nullable: false
         enabled nullable: false
