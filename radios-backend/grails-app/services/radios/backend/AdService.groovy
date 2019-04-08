@@ -5,7 +5,9 @@ import grails.gorm.services.Service
 @Service(Ad)
 class AdService {
 
-    Ad get(Serializable id){}
+    Ad get(Serializable id){
+        return Ad.get(id)
+    }
 
     List<Ad> list(Map args){
         return Ad.findAllByRadio(Radio.get(args.radio_id))
