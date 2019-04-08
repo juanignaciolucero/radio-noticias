@@ -1,7 +1,18 @@
 import radios.backend.Ad
 
 model {
-	Ad ad
+    Ad ad
 }
 
-json g.render(ad, [resolveTemplate: false])
+//json g.render(ad, [resolveTemplate: true, deep: true])
+
+json {
+    id ad.id
+    enabled ad.enabled
+    tab_name ad.tabName
+    tab_section ad.tabSection
+    type ad.type
+    radio tmpl.'/radio/radio'(ad.radio)
+    metadata tmpl.'/adMetadata/adMetadata'(ad.adMetadata)
+}
+

@@ -1,10 +1,16 @@
 package radios.backend
 
 class Ad {
-    String title
-    Multimedia multimedia
+    String type
+    String tabName
+    String tabSection
+    Boolean enabled
     Date dateCreated
     Date lastUpdated
+
+
+    static hasMany = [adMetadata: AdMetadata]
+    static belongsTo = [radio: Radio]
 
     static constraints = {
     }

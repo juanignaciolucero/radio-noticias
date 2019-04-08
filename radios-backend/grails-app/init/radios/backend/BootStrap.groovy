@@ -5,6 +5,7 @@ import grails.plugin.awssdk.s3.AmazonS3Service
 import radios.backend.ScrapingMunicipalidadJob
 import radios.backend.ScrapingProvinciaJob
 import radios.backend.ScrapingRadio10Job
+
 class BootStrap {
 
     AmazonS3Service amazonS3Service
@@ -14,18 +15,31 @@ class BootStrap {
         User user = User.findByUsername("admin")
         if (!user) {
             user = new User([
-                    username : "admin",
-                    firstName: "ADMIN",
-                    lastName : "ADMIN",
-                    password : "radios1234!"
+                username : "admin",
+                firstName: "ADMIN",
+                lastName : "ADMIN",
+                password : "radios1234!"
             ])
             user.save()
             UserRole.create(user, role)
         }
-
+        Radio radio = Radio.findOrCreateByName("RADIO10").save()
         Radio.findOrCreateByName("VALENOVENTAICIETESINCO").save()
         NewsCategory.findOrCreateByName("Otros").save()
         amazonS3Service.createBucket(grailsApplication.config.getProperty('aws.s3.bucket.name'))
+        Ad ad = Ad.findByTabNameAndTabSection("provinciales y nacionales", "carrousel")
+        if (!ad) {
+            new Ad([
+                tabName   : "provinciales y nacionales",
+                tabSection: "carrousel",
+                type      : "multiple",
+                enabled   : true,
+                radio     : radio,
+                adMetadata  : [new AdMetadata([
+                    urlRedirect: "http://www.google.com"
+                ])]
+            ]).save(failOnError: true)
+        }
         ScrapingMunicipalidadJob.triggerNow()
         ScrapingProvinciaJob.triggerNow()
         ScrapingRadio10Job.triggerNow()

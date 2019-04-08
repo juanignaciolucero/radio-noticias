@@ -3,16 +3,18 @@ package radios.backend
 import grails.gorm.services.Service
 
 @Service(Ad)
-interface AdService {
+class AdService {
 
-    Ad get(Serializable id)
+    Ad get(Serializable id){}
 
-    List<Ad> list(Map args)
+    List<Ad> list(Map args){
+        return Ad.findAllByRadio(Radio.get(args.radio_id))
+    }
 
-    Long count()
+    Long count(){}
 
-    void delete(Serializable id)
+    void delete(Serializable id){}
 
-    Ad save(Ad ad)
+    Ad save(Ad ad){}
 
 }

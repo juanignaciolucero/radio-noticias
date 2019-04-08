@@ -4,4 +4,7 @@ model {
 	Radio radio
 }
 
-json g.render(radio, [resolveTemplate: false])
+json{
+	id radio.id
+	name radio.name
+}

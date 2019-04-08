@@ -12,15 +12,16 @@ class AdController {
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    @Secured('permitAll')
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond adService.list(params), model:[adCount: adService.count()]
     }
 
+    @Secured('permitAll')
     def show(Long id) {
         respond adService.get(id)
     }
-
     def save(Ad ad) {
         if (ad == null) {
             render status: NOT_FOUND
