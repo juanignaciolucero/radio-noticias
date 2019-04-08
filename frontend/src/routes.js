@@ -60,7 +60,8 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     .state('app.newsCreate', {
       url: 'news/create',
       component: 'newsCreate'
-    }).state('app.newsEdit', {
+    })
+    .state('app.newsEdit', {
       url: 'news/edit/:id',
       component: 'newsEdit',
       resolve: {
@@ -75,6 +76,11 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     })
     .state('app.adEdit', {
       url: 'ad/edit/:id',
-      component: 'adEdit'
+      component: 'adEdit',
+      resolve: {
+        ad: (Restangular, $stateParams) => {
+          return Restangular.one('ads', $stateParams.id).get();
+        }
+      }
     });
 }

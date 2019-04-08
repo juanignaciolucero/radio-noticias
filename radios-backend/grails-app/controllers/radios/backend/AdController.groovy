@@ -9,7 +9,7 @@ class AdController {
 
     AdService adService
 
-    static responseFormats = ['json', 'xml']
+    static responseFormats = ['json']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     @Secured('permitAll')
@@ -22,6 +22,7 @@ class AdController {
     def show(Long id) {
         respond adService.get(id)
     }
+
     def save(Ad ad) {
         if (ad == null) {
             render status: NOT_FOUND

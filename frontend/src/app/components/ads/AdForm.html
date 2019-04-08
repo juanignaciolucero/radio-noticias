@@ -10,9 +10,9 @@
             <form ng-submit="onSave()">
               <div class="col-sm-12">
                 <ol style="padding: 1rem 0 0 0;margin-bottom: 0;" class="breadcrumb">
-                  <li class="text-bold">Radio 10</li>
-                  <li>Provinciales y nacionales</li>
-                  <li>Carrousel</li>
+                  <li class="text-bold">{{$ctrl.ad.radio.name}}</li>
+                  <li>{{$ctrl.ad.tab_name}}</li>
+                  <li>{{$ctrl.ad.tab_section}}</li>
                 </ol>
                 <div class="form-group">
                   <label class="control-label">Tipo</label>
@@ -29,9 +29,9 @@
                 </div>
                 <div>
                   <label class="control-label">Activo</label>
-                  <div class="checkbox">
+                  <div>
                     <label>
-                      <input type="checkbox">
+                      <input ng-model="$ctrl.ad.enabled" type="checkbox">
                     </label>
                   </div>
                 </div>
@@ -42,9 +42,8 @@
                         type="IMAGE"
                         class="ad-uploader"
                         media="metadata.image"></upload-multimedia>
-
                     </div>
-                    <div class="media-body" ng-if="metadata.image.mediaId">
+                    <div class="media-body" ng-if="metadata.image.mediaId || metadata.url_redirect">
                       <div class="form-group label-floating show-errors">
                         <label class="control-label">Url</label>
                         <input ng-required="true" ng-model="metadata.url_redirect" type="text" class="form-control">

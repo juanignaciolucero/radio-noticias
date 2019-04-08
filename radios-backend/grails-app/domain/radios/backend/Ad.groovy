@@ -8,7 +8,6 @@ class Ad {
     Date dateCreated
     Date lastUpdated
 
-
     static hasMany = [adMetadata: AdMetadata]
     static belongsTo = [radio: Radio]
 

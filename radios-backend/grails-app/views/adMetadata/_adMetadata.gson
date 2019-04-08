@@ -8,6 +8,8 @@ json {
     url_redirect adMetadata.urlRedirect
     if (adMetadata.image) {
         image tmpl.'/multimedia/multimedia'(multimedia: adMetadata.image)
+    } else {
+        image [:]
     }
 
 }
