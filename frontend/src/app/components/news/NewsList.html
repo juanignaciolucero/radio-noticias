@@ -3,7 +3,7 @@
     <div class="card-header" data-background-color="blue">
       <h4 class="title">Listado de noticias</h4>
     </div>
-    <div ng-if="$ctrl.loading" id="spinner" class="text-center" data-spinner='{"radius": 25}'></div>
+    <div ng-show="$ctrl.loading" id="spinner" class="text-center" data-spinner='{"radius": 25}'></div>
     <div ng-if="!$ctrl.loading" class="card-content table-responsive">
       <table class="table">
         <thead>
@@ -36,7 +36,7 @@
         </tbody>
       </table>
       <div class="text-center">
-        <ul uib-pagination total-items="$ctrl.totalCount" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"></ul>
+        <ul force-ellipses="true" max-size="5" uib-pagination total-items="$ctrl.totalCount" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"></ul>
       </div>
     </div>
   </div>

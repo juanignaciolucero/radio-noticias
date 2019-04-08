@@ -4,8 +4,8 @@ class NewsListController {
     this.news = [];
     this.totalCount = 0;
     this.currentPage = 1;
+    this.loading = true;
     this.getNews();
-    this.loading = false;
   }
 
   pageChanged() {

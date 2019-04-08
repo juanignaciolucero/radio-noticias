@@ -68,5 +68,13 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
           return Restangular.one('news', $stateParams.id).get();
         }
       }
+    })
+    .state('app.adList', {
+      url: 'ad',
+      component: 'adList'
+    })
+    .state('app.adEdit', {
+      url: 'ad/edit/:id',
+      component: 'adEdit'
     });
 }

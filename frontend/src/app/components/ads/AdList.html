@@ -1,0 +1,44 @@
+<div class="component">
+  <div class="card">
+    <div class="card-header" data-background-color="blue">
+      <h4 class="title">Listado de Anuncios</h4>
+    </div>
+    <div ng-if="$ctrl.loading" id="spinner" class="text-center" data-spinner='{"radius": 25}'></div>
+    <div ng-if="!$ctrl.loading" class="card-content table-responsive">
+      <table class="table">
+        <thead>
+        <th>Radio</th>
+        <th>Pagina</th>
+        <th>ubicación</th>
+        <th>Activa</th>
+        <th>Acciones</th>
+        <tr ng-repeat="element in $ctrl.list">
+          <td>
+            {{element.radio_id}}
+          </td>
+          <td>
+            {{element.tab_name}}
+          </td>
+          <td>
+            {{element.tab_section}}
+          </td>
+          <td>{{(element.enabled)? 'Si' : 'No'}}</td>
+          <td>
+            <a ui-sref="app.adEdit({ id: {{element.id}} })"
+               class="btn btn-default btn-xs btn-round">
+              <i class="material-icons">mode_edit</i>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="text-center">
+        <ul max-size="5" uib-pagination total-items="$ctrl.totalCount" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"></ul>
+      </div>
+    </div>
+  </div>
+
+  <button ui-sref="app.newsCreate" class="btn btn-primary float-button">
+    <i class="material-icons">add</i>
+  </button>
+</div>

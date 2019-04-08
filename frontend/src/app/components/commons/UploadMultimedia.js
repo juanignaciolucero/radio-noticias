@@ -34,6 +34,7 @@ export const UploadMultimedia = {
   controller: UploadMultimediaController,
   bindings: {
     media: '=',
-    type: '@'
+    type: '@',
+    title: '@'
   }
 };

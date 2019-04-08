@@ -8,12 +8,16 @@ import './assets/libs/material-dashboard-v1.2.0/assets/js/material-dashboard';
 
 import {NewsService} from './app/services/NewsService';
 import {AuthService} from './app/services/AuthService';
+import {AdService} from './app/services/AdService';
 import {App} from './app/containers/App';
 import {Auth} from './app/containers/Auth';
 import {NewsList} from './app/components/news/NewsList';
 import {NewsCreate} from './app/components/news/NewsCreate';
 import {NewsEdit} from './app/components/news/NewsEdit';
 import {NewsForm} from './app/components/news/NewsForm';
+import {AdEdit} from './app/components/ads/AdEdit';
+import {AdForm} from './app/components/ads/AdForm';
+import {AdList} from './app/components/ads/AdList';
 import {UploadMultimedia} from './app/components/commons/UploadMultimedia';
 import {AuthLogout} from './app/components/auth/AuthLogout';
 import {AuthLogin} from './app/components/auth/AuthLogin';
@@ -62,12 +66,16 @@ angular
   .config(routesConfig)
   .service('newsService', NewsService)
   .service('authService', AuthService)
+  .service('adService', AdService)
   .component('app', App)
   .component('auth', Auth)
   .component('newsList', NewsList)
   .component('newsCreate', NewsCreate)
   .component('newsEdit', NewsEdit)
   .component('newsForm', NewsForm)
+  .component('adList', AdList)
+  .component('adEdit', AdEdit)
+  .component('adForm', AdForm)
   .component('uploadMultimedia', UploadMultimedia)
   .component('authLogout', AuthLogout)
   .component('authLogin', AuthLogin)
