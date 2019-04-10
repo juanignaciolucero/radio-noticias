@@ -3,6 +3,7 @@ package radios.backend
 import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
+import Command.ads.UpdateCommand
 
 @Secured(['ROLE_ADMIN'])
 class AdController {
@@ -39,20 +40,17 @@ class AdController {
         respond ad, [status: CREATED, view:"show"]
     }
 
-    def update(Ad ad) {
-        if (ad == null) {
+    def update(UpdateCommand command) {
+        if(!command.getAd()) {
             render status: NOT_FOUND
             return
         }
-
-        try {
-            adService.save(ad)
-        } catch (ValidationException e) {
-            respond ad.errors, view:'edit'
+        if(command.hasErrors()){
+            respond command.errors, view:'update'
             return
         }
 
-        respond ad, [status: OK, view:"show"]
+        respond (adService.update(command))
     }
 
     def delete(Long id) {

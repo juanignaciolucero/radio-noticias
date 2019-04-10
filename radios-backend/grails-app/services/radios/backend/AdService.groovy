@@ -1,22 +1,33 @@
 package radios.backend
 
 import grails.gorm.services.Service
+import Command.ads.UpdateCommand
 
-@Service(Ad)
 class AdService {
 
-    Ad get(Serializable id){
+    Ad get(Serializable id) {
         return Ad.get(id)
     }
 
-    List<Ad> list(Map args){
+    List<Ad> list(Map args) {
         return Ad.findAllByRadio(Radio.get(args.radio_id))
     }
 
-    Long count(){}
+    Long count() {}
 
-    void delete(Serializable id){}
+    Ad update(UpdateCommand command) {
+        Ad ad = command.getAd()
+        ad.properties = command.params()
+        ad.validate()
+        if (!ad.hasErrors()) {
+            ad.save()
+        }
+        return ad
 
-    Ad save(Ad ad){}
+    }
+
+    void delete(Serializable id) {}
+
+    Ad save(Ad ad) {}
 
 }
