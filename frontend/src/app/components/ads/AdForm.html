@@ -50,10 +50,10 @@
                       </div>
 
                       <div style="position: absolute; bottom: 1rem;right: 1rem;" class="actions">
-                        <button type="button" class="btn btn-danger btn-round">
+                        <button ng-click="$ctrl.onDeleteMetadata($index)" type="button" class="btn btn-danger btn-round">
                           <i class="material-icons">delete</i>
                         </button>
-                        <button type="button" ng-click="$ctrl.onSaveMetadata()" ng-if="$last && metadata.mocked" class="btn btn-success btn-round">
+                        <button type="button" ng-click="$ctrl.onSaveMetadata()" ng-if="$last && !metadata.id" class="btn btn-success btn-round">
                           <i class="material-icons">save</i>
                         </button>
                       </div>

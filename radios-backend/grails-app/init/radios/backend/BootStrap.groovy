@@ -30,14 +30,12 @@ class BootStrap {
         Ad ad = Ad.findByTabNameAndTabSection("provinciales y nacionales", "carrousel")
         if (!ad) {
             new Ad([
-                tabName   : "provinciales y nacionales",
-                tabSection: "carrousel",
-                type      : "multiple",
-                enabled   : true,
-                radio     : radio,
-                adMetadata  : [new AdMetadata([
-                    urlRedirect: "http://www.google.com"
-                ])]
+                    tabName   : "Provinciales y Nacionales",
+                    tabSection: "carrousel",
+                    type      : "multiple",
+                    enabled   : true,
+                    radio     : radio,
+                    adMetadata: []
             ]).save(failOnError: true)
         }
         ScrapingMunicipalidadJob.triggerNow()
