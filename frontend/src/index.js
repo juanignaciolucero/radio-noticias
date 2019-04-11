@@ -1,3 +1,4 @@
+/* eslint-disable angular/log */
 
 import angular from 'angular';
 import 'jquery';
@@ -63,6 +64,18 @@ angular
     PermPermissionStore
       .definePermission('isAuthenticated', authService => {
         return authService.isAuthenticated();
+      });
+  }])
+  .run(['Restangular', '$rootScope', '$stateParams', (Restangular, $rootScope, $stateParams) => {
+    const getRadios = Restangular.all('radios').getList();
+    getRadios
+      .then(radios => {
+        $rootScope.radios = radios.plain();
+        if ($stateParams.radio_id) {
+          $rootScope.currentRadioId = parseInt($stateParams.radio_id, 10);
+        } else {
+          $rootScope.currentRadioId = $rootScope.radios[0].id;
+        }
       });
   }])
   .config(routesConfig)

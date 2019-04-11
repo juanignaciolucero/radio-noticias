@@ -4,14 +4,11 @@
       <h4 class="text-center">Administración</h4>
       <div class="form-group">
         <label class="control-label">Radio en uso:</label>
-        <select  class="form-control disabled">
-          <option value="single">
-            Radio 10
-          </option>
-          <option value="multiple">
-            Vale 91.7
-          </option>
-        </select>
+
+        <select name="radios"
+                class="form-control"
+                ng-options='radio.id as radio.name for radio in $root.radios'
+                ng-model="$root.currentRadioId"></select>
       </div>
     </div>
 

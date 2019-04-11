@@ -71,7 +71,7 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
       }
     })
     .state('app.adList', {
-      url: 'ad',
+      url: 'ad?radio_id',
       component: 'adList'
     })
     .state('app.adEdit', {

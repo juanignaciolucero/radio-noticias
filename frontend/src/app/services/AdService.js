@@ -1,8 +1,9 @@
 /* eslint-disable angular/log,camelcase */
 export class AdService {
   /** @ngInject */
-  constructor(Restangular) {
+  constructor(Restangular, $rootScope) {
     this.Restangular = Restangular;
+    this.$rootScope = $rootScope;
   }
 
   get(id) {
@@ -10,7 +11,7 @@ export class AdService {
   }
 
   list() {
-    return this.Restangular.all('ads').getList({radio_id: 1});
+    return this.Restangular.all('ads').getList({radio_id: this.$rootScope.currentRadioId});
   }
 
   onSave(ad) {
