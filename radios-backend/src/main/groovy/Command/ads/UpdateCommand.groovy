@@ -3,22 +3,30 @@ package Command.ads
 import grails.validation.Validateable
 import radios.backend.Ad
 import radios.backend.AdMetadata
-
+import radios.backend.Multimedia
 
 
 class UpdateCommand implements Validateable {
     String id
-    String tab_name
-    String tab_section
+    String tabName
+    String tabSection
     Boolean enabled
     String type
     List<AdMetadata> metadata = []
 
     Map params() {
+
+
         return [
             id         : id,
             enabled    : enabled,
-            metadata   : metadata
+            metadata   : metadata.collect {
+                [
+                        id: it.id,
+                        urlRedirect: it.urlRedirect,
+                        image: Multimedia.findByMediaId(it.image.mediaId)
+                ]
+            }
         ]
     }
 
@@ -28,8 +36,8 @@ class UpdateCommand implements Validateable {
     static constraints =
         {
             id nullable: false
-            tab_name nullable: false
-            tab_section nullable: false
+            tabName nullable: false
+            tabSection nullable: false
             type nullable: false, inList: ["multiple", "single"]
             metadata validator: { field, obj ->
                 return (obj.type == "single" ? field.size < 2 : field.size < 6)

@@ -25,7 +25,7 @@
           <td>{{(news.featured)? 'Si' : 'No'}}</td>
           <td>
             <a ui-sref="app.newsEdit({ id: {{news.id}} })"
-               class="btn btn-default btn-xs btn-round">
+               class="btn btn-primary btn-xs btn-round">
               <i class="material-icons">mode_edit</i>
             </a>
             <button ng-click="$ctrl.deleteNews(news.id)" class="btn btn-danger btn-xs btn-round">

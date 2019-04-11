@@ -5,7 +5,8 @@ model {
 }
 
 json {
-    url_redirect adMetadata.urlRedirect
+    id adMetadata.id
+    urlRedirect adMetadata.urlRedirect
     if (adMetadata.image) {
         image tmpl.'/multimedia/multimedia'(multimedia: adMetadata.image)
     } else {

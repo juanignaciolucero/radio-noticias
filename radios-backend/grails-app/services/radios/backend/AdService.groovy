@@ -1,6 +1,5 @@
 package radios.backend
 
-import grails.gorm.services.Service
 import Command.ads.UpdateCommand
 
 class AdService {
@@ -17,10 +16,13 @@ class AdService {
 
     Ad update(UpdateCommand command) {
         Ad ad = command.getAd()
-        ad.properties = command.params()
+        Map params = command.params()
+        List idsToDelete = (ad.metadata*.id - params.metadata*.id)
+        !idsToDelete?: AdMetadata.findAllByIdInList(idsToDelete)*.delete()
+        ad.properties = params
         ad.validate()
         if (!ad.hasErrors()) {
-            ad.save()
+            ad.save(flush: true)
         }
         return ad
 

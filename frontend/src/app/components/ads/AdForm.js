@@ -14,7 +14,7 @@ class AdFormController {
     if (this.ad.type === 'multiple' && this.ad.metadata.length < MAX_LENGTH_METADATA) {
       this.ad.metadata.push({
         image: {},
-        url_redirect: ''
+        urlRedirect: ''
       });
     }
   }

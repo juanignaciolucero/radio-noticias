@@ -9,10 +9,10 @@ model {
 json {
     id ad.id
     enabled ad.enabled
-    tab_name ad.tabName
-    tab_section ad.tabSection
+    tabName ad.tabName
+    tabSection ad.tabSection
     type ad.type
     radio tmpl.'/radio/radio'(ad.radio)
-    metadata tmpl.'/adMetadata/adMetadata'(ad.adMetadata)
+    metadata tmpl.'/adMetadata/adMetadata'(ad.metadata)
 }
 

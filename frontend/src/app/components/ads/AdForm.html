@@ -11,8 +11,8 @@
               <div class="col-sm-12">
                 <ol style="padding: 1rem 0 0 0;margin-bottom: 0;" class="breadcrumb">
                   <li class="text-bold">{{$ctrl.ad.radio.name}}</li>
-                  <li>{{$ctrl.ad.tab_name}}</li>
-                  <li>{{$ctrl.ad.tab_section}}</li>
+                  <li>{{$ctrl.ad.tabName}}</li>
+                  <li>{{$ctrl.ad.tabSection}}</li>
                 </ol>
                 <div class="form-group">
                   <label class="control-label">Tipo</label>
@@ -43,10 +43,10 @@
                         class="ad-uploader"
                         media="metadata.image"></upload-multimedia>
                     </div>
-                    <div class="media-body" ng-if="metadata.image.mediaId || metadata.url_redirect">
+                    <div class="media-body" ng-if="metadata.image.mediaId || metadata.urlRedirect">
                       <div class="form-group label-floating show-errors">
                         <label class="control-label">Url</label>
-                        <input ng-required="true" ng-model="metadata.url_redirect" type="text" class="form-control">
+                        <input ng-required="true" ng-model="metadata.urlRedirect" type="text" class="form-control">
                       </div>
 
                       <div style="position: absolute; bottom: 1rem;right: 1rem;" class="actions">
