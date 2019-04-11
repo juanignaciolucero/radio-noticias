@@ -139,6 +139,22 @@ class AdService {
                 enabled   : true,
                 radio     : radio10,
                 adMetadata: []
+            ],
+            [
+                    tabName   : "Inicio",
+                    tabSection: "Principal",
+                    type      : "single",
+                    enabled   : true,
+                    radio     : radioVale,
+                    adMetadata: []
+            ],
+            [
+                    tabName   : "Inicio",
+                    tabSection: "Secundario",
+                    type      : "single",
+                    enabled   : true,
+                    radio     : radioVale,
+                    adMetadata: []
             ]
 
         ]

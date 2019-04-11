@@ -1,4 +1,6 @@
 /* eslint-disable angular/log,camelcase */
+const uri = 'section_images';
+
 export class AdService {
   /** @ngInject */
   constructor(Restangular, $rootScope) {
@@ -7,11 +9,11 @@ export class AdService {
   }
 
   get(id) {
-    return this.Restangular.all('ads').get(id);
+    return this.Restangular.all(uri).get(id);
   }
 
   list() {
-    return this.Restangular.all('ads').getList({radio_id: this.$rootScope.currentRadioId});
+    return this.Restangular.all(uri).getList({radio_id: this.$rootScope.currentRadioId});
   }
 
   onSave(ad) {
@@ -19,6 +21,6 @@ export class AdService {
     body.metadata = body.metadata.filter(e => {
       return Object.keys(e.image).length > 0;
     });
-    return this.Restangular.one('ads', ad.id).customPUT(body);
+    return this.Restangular.one(uri, ad.id).customPUT(body);
   }
 }

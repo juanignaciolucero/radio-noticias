@@ -1,5 +1,9 @@
 /* eslint-disable camelcase,angular/log */
-const MAX_LENGTH_METADATA = 5;
+const MAX_LENGTH_METADATA = {
+  single: 1,
+  multiple: 5
+};
+
 class AdFormController {
   /* eslint-env es6 */
   constructor($state, adService, toastr) {
@@ -12,7 +16,7 @@ class AdFormController {
   }
 
   adBlankMetadata() {
-    if (this.ad.type === 'multiple' && this.ad.metadata.length < MAX_LENGTH_METADATA) {
+    if (this.ad.metadata.length < MAX_LENGTH_METADATA[this.ad.type]) {
       this.ad.metadata.push({
         image: {},
         urlRedirect: ''

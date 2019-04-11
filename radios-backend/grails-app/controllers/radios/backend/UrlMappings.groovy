@@ -8,7 +8,7 @@ class UrlMappings {
             "/radios"(resources: "radio")
             "/categories"(resources: "newsCategory")
             "/multimedia"(resources: "multimedia")
-            "/ads"(resources: "ad")
+            "/section_images"(resources: "ad")
             "/scrap"(controller: "Scraping", action: "scrap")
         }
 

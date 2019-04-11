@@ -114,7 +114,7 @@ class ScrapingService {
                         source        : Scraping.NEUQUEN_GOV.base,
                         featured      : featured,
                         newsCategory  : category,
-                        radios        : Radio.all,
+                        radios        : [Radio.findByName('Radio 10')],
                         user          : User.first(),
                         image         : downloadUrlImage(imageUrl).mediaId,
                         scraping      : Scraping.NEUQUEN_GOV.toString()
@@ -170,7 +170,7 @@ class ScrapingService {
                         source        : Scraping.NEUQUEN_MUNI.base,
                         rawDescription: raw_article.toString(),
                         newsCategory  : category,
-                        radios        : Radio.all,
+                        radios        : [Radio.findByName('Radio 10')],
                         featured      : featured,
                         user          : User.first(),
                         image         : downloadUrlImage(img.attr("src")).mediaId,
@@ -184,8 +184,12 @@ class ScrapingService {
     Map minutounoRadio10news(Element article, Boolean featured) {
         String title = article.select(".title").text()
         String imageUrl = article.select("figure img").attr("src")
+        String categoryName = 'Otros'
+        if(article.selectFirst('.badge')) {
+            categoryName = article.selectFirst('.badge').attr('data-badge-caption')
+        }
         NewsCategory category = NewsCategory.findOrCreateWhere(
-            [name: article.selectFirst('.badge').attr('data-badge-caption')])
+            [name: categoryName])
         String description = article.select(".preview a").text()
         def fullArticleRaw = new URL(article.select(".preview a").attr("href")).getText()
         Document fullArticle = Jsoup.parse(fullArticleRaw)
@@ -199,7 +203,7 @@ class ScrapingService {
             rawDescription: raw_article.toString(),
             source        : Scraping.MINUTO_UNO_RADIO10.base,
             newsCategory  : category,
-            radios        : Radio.all,
+            radios        : [Radio.findByName('Radio 10')],
             featured      : featured,
             user          : User.first(),
             imageUrl      : imageUrl,
