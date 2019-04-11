@@ -6,8 +6,10 @@ import radios.backend.ScrapingMunicipalidadJob
 import radios.backend.ScrapingProvinciaJob
 import radios.backend.ScrapingRadio10Job
 
+
 class BootStrap {
 
+    AdService adService
     AmazonS3Service amazonS3Service
     GrailsApplication grailsApplication
     def init = { servletContext ->
@@ -23,21 +25,14 @@ class BootStrap {
             user.save()
             UserRole.create(user, role)
         }
-        Radio radio = Radio.findOrCreateByName("RADIO10").save()
-        Radio.findOrCreateByName("VALENOVENTAICIETESINCO").save()
+
+        Radio.findOrCreateByName('Radio 10').save()
+        Radio.findOrCreateByName('Vale 91.7').save()
         NewsCategory.findOrCreateByName("Otros").save()
+
+        adService.init()
         amazonS3Service.createBucket(grailsApplication.config.getProperty('aws.s3.bucket.name'))
-        Ad ad = Ad.findByTabNameAndTabSection("provinciales y nacionales", "carrousel")
-        if (!ad) {
-            new Ad([
-                    tabName   : "Provinciales y Nacionales",
-                    tabSection: "carrousel",
-                    type      : "multiple",
-                    enabled   : true,
-                    radio     : radio,
-                    adMetadata: []
-            ]).save(failOnError: true)
-        }
+
         ScrapingMunicipalidadJob.triggerNow()
         ScrapingProvinciaJob.triggerNow()
         ScrapingRadio10Job.triggerNow()
