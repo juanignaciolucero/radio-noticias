@@ -2,8 +2,9 @@
 const MAX_LENGTH_METADATA = 5;
 class AdFormController {
   /* eslint-env es6 */
-  constructor($state, adService) {
+  constructor($state, adService, toastr) {
     this.$state = $state;
+    this.toastr = toastr;
     this.adService = adService;
     this.$onInit = () => {
       this.adBlankMetadata();
@@ -32,17 +33,24 @@ class AdFormController {
   onSave() {
     const ctrl = this;
     ctrl.loading = true;
-    this.adService.onSave(ctrl.ad).then(() => {
-      ctrl.$state.go('app.adList');
-    }).finally(() => {
-      ctrl.loading = false;
-    });
+    this.adService.onSave(ctrl.ad)
+      .then(() => {
+        ctrl.$state.go('app.adList');
+        ctrl.toastr.success('Acción realizada con exito!');
+      })
+      .catch(() => {
+        ctrl.$state.go('app.adList');
+        ctrl.toastr.error('Algo salio mal, vuelva a intentar.');
+      })
+      .finally(() => {
+        ctrl.loading = false;
+      });
   }
 }
 
 export const AdForm = {
   template: require('./AdForm.html'),
-  controller: ['$state', 'adService', AdFormController],
+  controller: ['$state', 'adService', 'toastr', AdFormController],
   bindings: {
     ad: '<'
   }

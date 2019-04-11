@@ -31,6 +31,7 @@ import 'angular-cookies';
 import 'angular-permission';
 import 'angular-route';
 import 'angular-bootstrap-show-errors';
+import 'angular-toastr';
 
 import routesConfig from './routes';
 import sessionInjector from './sessionInjector';
@@ -48,7 +49,8 @@ angular
     'ngRoute',
     'permission',
     'permission.ng',
-    'ui.bootstrap.showErrors'
+    'ui.bootstrap.showErrors',
+    'toastr'
   ])
   .run(['Restangular', Restangular => {
     Restangular.setBaseUrl(BACKEND_URL + '/api');
