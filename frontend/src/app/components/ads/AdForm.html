@@ -53,12 +53,18 @@
                         <button ng-click="$ctrl.onDeleteMetadata($index)" type="button" class="btn btn-danger btn-round">
                           <i class="material-icons">delete</i>
                         </button>
-                        <button type="button" ng-disabled="!metadata.urlRedirect" ng-click="$ctrl.onSaveMetadata()" ng-if="$last && !metadata.id" class="btn btn-success btn-round">
-                          <i class="material-icons">save</i>
-                        </button>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="text-center">
+                  <hr/>
+                  <button type="button"
+                          ng-if="$ctrl.ad.metadata.length < $ctrl.MAX_LENGTH_METADATA[$ctrl.ad.type]"
+                          ng-click="$ctrl.addMetadata()"
+                          class="btn btn-primary">
+                    Agregar Imagen
+                  </button>
                 </div>
               </div>
               <div class="col-sm-12">

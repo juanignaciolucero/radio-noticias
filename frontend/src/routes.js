@@ -79,7 +79,7 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
       component: 'adEdit',
       resolve: {
         ad: (Restangular, $stateParams) => {
-          return Restangular.one('ads', $stateParams.id).get();
+          return Restangular.one('section_images', $stateParams.id).get();
         }
       }
     });

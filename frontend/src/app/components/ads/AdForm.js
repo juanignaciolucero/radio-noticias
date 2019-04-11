@@ -10,22 +10,14 @@ class AdFormController {
     this.$state = $state;
     this.toastr = toastr;
     this.adService = adService;
-    this.$onInit = () => {
-      this.adBlankMetadata();
-    };
+    this.MAX_LENGTH_METADATA = MAX_LENGTH_METADATA;
   }
 
-  adBlankMetadata() {
-    if (this.ad.metadata.length < MAX_LENGTH_METADATA[this.ad.type]) {
-      this.ad.metadata.push({
-        image: {},
-        urlRedirect: ''
-      });
-    }
-  }
-
-  onSaveMetadata() {
-    this.adBlankMetadata();
+  addMetadata() {
+    this.ad.metadata.push({
+      image: {},
+      urlRedirect: ''
+    });
   }
 
   onDeleteMetadata(index) {
@@ -39,14 +31,13 @@ class AdFormController {
     ctrl.loading = true;
     this.adService.onSave(ctrl.ad)
       .then(() => {
-        ctrl.$state.go('app.adList');
         ctrl.toastr.success('Acción realizada con exito!');
       })
       .catch(() => {
-        ctrl.$state.go('app.adList');
         ctrl.toastr.error('Algo salio mal, vuelva a intentar.');
       })
       .finally(() => {
+        ctrl.$state.go('app.adList');
         ctrl.loading = false;
       });
   }
