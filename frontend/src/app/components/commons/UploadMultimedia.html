@@ -14,7 +14,6 @@
         upload-button
         param="file"
         data="{type: $ctrl.type}"
-        accept="{{['image/jpeg', 'image/jpg']}}"
         url="{{$ctrl.endPoint}}"
         on-upload="$ctrl.onUpload(files)"
         on-success="$ctrl.onSuccess(response)"
