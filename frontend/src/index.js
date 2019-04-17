@@ -66,9 +66,9 @@ angular
         return authService.isAuthenticated();
       });
   }])
+  .config(routesConfig)
   .run(['Restangular', '$rootScope', '$stateParams', (Restangular, $rootScope, $stateParams) => {
-    const getRadios = Restangular.all('radios').getList();
-    getRadios
+    Restangular.all('radios').getList()
       .then(radios => {
         $rootScope.radios = radios.plain();
         if ($stateParams.radio_id) {
@@ -78,7 +78,6 @@ angular
         }
       });
   }])
-  .config(routesConfig)
   .service('newsService', NewsService)
   .service('authService', AuthService)
   .service('adService', AdService)
