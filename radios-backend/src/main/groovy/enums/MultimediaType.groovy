@@ -1,5 +1,5 @@
 package enums
 
 enum MultimediaType {
-    AUDIO, IMAGE
+    AUDIO, IMAGE, VIDEO
 }

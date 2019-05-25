@@ -20,8 +20,10 @@ class SaveCommand implements Validateable {
         switch (type) {
             case MultimediaType.AUDIO: return ['mp3'].contains(ext)
                 break
-            case MultimediaType.IMAGE: return ['jpg', 'jpeg', 'png', 'gif'].contains(ext)
+            case MultimediaType.IMAGE: return ['jpg', 'jpeg', 'png'].contains(ext)
                 break
+            case MultimediaType.VIDEO: return ['mp4'].contains(ext)
+                break 
         }
     }
 }
