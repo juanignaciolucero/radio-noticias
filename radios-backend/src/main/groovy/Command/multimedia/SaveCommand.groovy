@@ -10,20 +10,17 @@ class SaveCommand implements Validateable {
     MultimediaType type
 
     static constraints = {
+        type nullable: true
         file validator: { file, obj ->
-            return (file && !file.empty && obj.validate(file, obj.type))
+            return (file && !file.empty && obj.validate(file))
         }
     }
 
-    Boolean validate(MultipartFile file, MultimediaType type) {
+    Boolean validate(MultipartFile file) {
         String ext = FileUtils.getExt(file)
-        switch (type) {
-            case MultimediaType.AUDIO: return ['mp3'].contains(ext)
-                break
-            case MultimediaType.IMAGE: return ['jpg', 'jpeg', 'png', 'gif'].contains(ext)
-                break
-            case MultimediaType.VIDEO: return ['mp4'].contains(ext)
-                break 
+        type = MultimediaType.values().find { MultimediaType mt ->
+            mt.types.contains(ext)
         }
+        return type as Boolean
     }
 }
