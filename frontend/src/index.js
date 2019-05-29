@@ -68,15 +68,18 @@ angular
   }])
   .config(routesConfig)
   .run(['Restangular', '$rootScope', '$stateParams', (Restangular, $rootScope, $stateParams) => {
-    Restangular.all('radios').getList()
-      .then(radios => {
-        $rootScope.radios = radios.plain();
-        if ($stateParams.radio_id) {
-          $rootScope.currentRadioId = parseInt($stateParams.radio_id, 10);
-        } else {
-          $rootScope.currentRadioId = $rootScope.radios[0].id;
-        }
-      });
+    $rootScope.getRadios = () => {
+      Restangular.all('radios').getList()
+        .then(radios => {
+          $rootScope.radios = radios.plain();
+          if ($stateParams.radio_id) {
+            $rootScope.currentRadioId = parseInt($stateParams.radio_id, 10);
+          } else {
+            $rootScope.currentRadioId = $rootScope.radios[0].id;
+          }
+        });
+    };
+    $rootScope.getRadios();
   }])
   .service('newsService', NewsService)
   .service('authService', AuthService)
